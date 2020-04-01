@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Hello <span thjs:text="${username}">(username)</span>
+        You're using Thymeleaf for JavaScript!  Wanna see some random fruit?</p>
+        <ul>
+          <li thjs:each="product: ${allProducts}">
+            <div thjs:text="${product.name}">Oranges</div>
+            <div thjs:text="${product.price}">0.99</div>
+          </li>
+        </ul>
+</body>
+</html>

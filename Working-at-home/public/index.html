@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LOGO</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/index.css">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400|Raleway:700&display=swap" rel="stylesheet">
+	<script src="./js/index.js"></script>
+</head>
+<body>
+	<section>
+		<h1 class="logo">Telecommuting<br> System</h1>
+		<form id="content" action="/login/local" method ="POST">
+			<input type="email" name="username" class="IDinput" placeholder="Email" minlength="3" maxlength="255">
+			<input type="password" name="password" class="PWinput" placeholder="password" minlength="8" maxlength="255">
+			<button type="submit" id="login" >로그인</button>
+			<button id="signup"> 회원가입</button>
+			<button id="PWfind">비밀번호 찾기</button>
+		</form>
+		<button id="googleLogin">google</button>
+	</section>
+</body>
+</html>
