@@ -1,6 +1,6 @@
 import fs from 'fs';
 import sha256 from 'sha256';
-import RandomStringGenerator from './../function/RandomStringGenerator';
+import RandomStringGenerator from './../Security/RandomStringGenerator';
 import session from 'express-session';
 const MySQLStore = require('express-mysql-session')(session);
 const connectionInfo = JSON.parse(fs.readFileSync(__dirname+'/../AuthInfo/dbAuthInfo.json',{encoding:'UTF-8'}));

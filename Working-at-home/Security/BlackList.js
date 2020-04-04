@@ -27,6 +27,10 @@ let checkBlackList = (ip)=>{
 }
 
 let addBlackListCount = (ip)=>{
+    if(!blackListIPList.has(ip)){
+        blackListIPList.set(ip, {count:0, blockTimer:new Date()});
+    }
+    
     let prevValue = blackListIPList.get(ip);
     let sinMinute = prevValue.blockTimer;
     if(prevValue.count > 5){

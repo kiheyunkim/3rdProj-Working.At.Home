@@ -12,9 +12,9 @@ export default (app)=>{
     app.use(passport.session());
 
     passport.use(new googleStrategy({
-        clientID: passportInfo.CLIENT_ID,
-        clientSecret: passportInfo.CLIENT_SECRET,
-        callbackURL: passportInfo.CALLBACK_URL
+        clientID: passportInfo.GOOGLE.CLIENT_ID,
+        clientSecret: passportInfo.GOOGLE.CLIENT_SECRET,
+        callbackURL: passportInfo.GOOGLE.CALLBACK_URL
     },
     (accessToken, refreshToken, profile, done)=> {      //로그인 되는 순간에 불러온다.
         // asynchronous verification, for effect...

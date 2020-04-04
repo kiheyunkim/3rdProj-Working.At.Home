@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LOGO</title>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<script src="./../js/pwchange.js"></script>
+	<link rel="stylesheet" href="./../css/pwchange.css">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400|Raleway:700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<section>
+		<h2>비밀번호변경</h2>
+		<form id="content" method="POST" action="/login/passwordReset">
+			<label for="userEmail">이메일</label>
+			<input type="text" id = "email" class="userEmail input" name="email" disabled>
+			<label for="existUserPW">기존비밀번호</label>
+			<input type="password" class="existUserPW input" name="currentPw">
+			<label for="changeUserPW">변경비밀번호</label>
+			<input type="password" class="changeUserPW input" name="newPw1">
+			<label for="reenterUserPW">재입력</label>
+			<input type="password" class="reenterUserPW input" name="newPw2">
+			<button type="submit" id="change">변경</button>
+		</form>
+		<form method="POST" action="/login/passwordResetSkip">
+			<button id="skip">다음에 변경</button>
+		</form>
+	</section>
+</body>
+</html>

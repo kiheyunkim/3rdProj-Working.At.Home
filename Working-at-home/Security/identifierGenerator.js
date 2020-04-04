@@ -1,30 +1,32 @@
-import RandomStringGenerator from '../function/RandomStringGenerator';
+import RandomStringGenerator from './RandomStringGenerator';
 import Sha256 from 'sha256';
 
 let adminIdentifier = new Set();
 let userIdentifier = new Set();
 
-let tempSet = new Set();
-
-for(let i=0;i<10;++i){
-    let key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
-    while(tempSet.has(key)){
-        key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+let setIdentifier = ()=>{
+    let tempSet = new Set();
+    
+    for(let i=0;i<10;++i){
+        let key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+        while(tempSet.has(key)){
+            key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+        }
+        tempSet.add(key);
+        adminIdentifier.add(key);
     }
-    tempSet.add(key);
-    adminIdentifier.add(Sha256(RandomStringGenerator(parseInt(Math.random()*100))));
-}
-
-for(let i=0;i<10;++i){
-    let key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
-    while(tempSet.has(key)){
-        key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+    
+    for(let i=0;i<10;++i){
+        let key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+        while(tempSet.has(key)){
+            key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
+        }
+        tempSet.add(key);
+        userIdentifier.add(key);
     }
-    tempSet.add(key);
-    userIdentifier.add(Sha256(RandomStringGenerator(parseInt(Math.random()*100))));
-}
 
-tempSet.clear();
+    tempSet.clear();
+}    
 
 let checkAdminAuth = (key) => {
     if(adminIdentifier.has(key)){
@@ -42,22 +44,26 @@ let checkUserAuth = (key) => {
 
 let getAdminAuth = () =>{
     let count = parseInt(Math.random()*(adminIdentifier.size-1));
-    let retval= adminIdentifier.values();
+    let retval = adminIdentifier.values();
+    let iterator = retval.next();
+
     for(let i=0;i<count;++i){
-        retval.next();
+        iterator = retval.next();
     }
-    
-    return retval.value;
+
+    return iterator.value;
 }
 
 let getUserAuth = () =>{
     let count = parseInt(Math.random()*(userIdentifier.size-1));
     let retval= userIdentifier.values();
+    let iterator = retval.next();
+
     for(let i=0;i<count;++i){
-        retval.next();
+        iterator = retval.next();
     }
     
-    return retval.value;
+    return iterator.value;
 }
 
-export default {checkAdminAuth, checkUserAuth, getAdminAuth, getUserAuth};
+export {setIdentifier, checkAdminAuth, checkUserAuth, getAdminAuth, getUserAuth};

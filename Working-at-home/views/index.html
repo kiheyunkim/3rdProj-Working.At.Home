@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<title>LOGO</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400|Raleway:700&display=swap" rel="stylesheet">
+	<script src="./js/index.js"></script>
 </head>
 <body>
-    <p>Hello <span thjs:text="${username}">(username)</span>
-        You're using Thymeleaf for JavaScript!  Wanna see some random fruit?</p>
-        <ul>
-          <li thjs:each="product: ${allProducts}">
-            <div thjs:text="${product.name}">Oranges</div>
-            <div thjs:text="${product.price}">0.99</div>
-          </li>
-        </ul>
+	<section>
+		<h1 class="logo">Telecommuting<br> System</h1>
+		<div id="content">
+			<form action="/login/local" method ="POST">
+				<input type="email" name="username" class="IDinput" placeholder="Email" minlength="3" maxlength="255">
+				<input type="password" name="password" class="PWinput" placeholder="password" minlength="8" maxlength="255">
+				<button type="submit" id="login" >로그인</button>
+			</form>
+			<button id="signup"> 회원가입</button>
+			<button id="PWfind">비밀번호 재설정</button>
+			<button id="googleLogin">google</button>
+		</div>
+	</section>
 </body>
 </html>

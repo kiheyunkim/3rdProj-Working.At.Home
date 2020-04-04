@@ -18,7 +18,7 @@ let addEmplyeeModel = (sequelize) => {
             allowNull:0
         },
         grade:{
-            type:DataTypes.TINYINT,
+            type:DataTypes.STRING,
             allowNull:0
         },
         verified:{

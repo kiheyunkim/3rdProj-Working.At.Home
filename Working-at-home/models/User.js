@@ -8,6 +8,10 @@ let addUserModel = (sequelize) => {
             primaryKey:true,
             allowNull:false
         },
+        accountType:{
+            type:DataTypes.STRING(20),
+            allowNull:false
+        },
         passwd:{
             type:DataTypes.STRING(64),
             allowNull:true

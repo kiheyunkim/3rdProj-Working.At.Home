@@ -4,6 +4,7 @@ import addRouter from './Routers/ExpressRouter';
 import addSession from './Controllers/Session';
 import addPassport from './Controllers/Passport';
 import sequelizeInit from './sequelizeInit';
+import {setIdentifier} from './Security/identifierGenerator';
 
 
 import expressThymeleaf from 'express-thymeleaf';
@@ -15,6 +16,9 @@ const app = express();
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
+
+//setSecurity
+setIdentifier();
 //세션 설정 
 addSession(app);
 //passPort 설정
@@ -27,7 +31,6 @@ if(!sequelizeInit()){
     process.exit(-1);
 }
 
-app.use(express.static(__dirname + '/public'));
 app.engine('html',expressThymeleaf(templateEngine));
 app.set('view engine','html');
 

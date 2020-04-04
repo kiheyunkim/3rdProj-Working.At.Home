@@ -2,7 +2,7 @@ import fs from 'fs';
 import sha256 from 'sha256';
 import sequelize from './models/index';
 import {Emailsend} from './Controllers/MailSend';
-import RandomStringGenerator from './function/RandomStringGenerator';
+import RandomStringGenerator from './Security/RandomStringGenerator';
 
 export default async ()=>{
     try {
@@ -17,20 +17,29 @@ export default async ()=>{
         count = await sequelize.models.user.count('*',{transaction});
         if(count === 0){
             let adminEmail = JSON.parse(fs.readFileSync(__dirname+'/AuthInfo/admin.json',{encoding:'UTF-8'}));
-            let tempPasswd = sha256(RandomStringGenerator(Math.random()*25));
-            let length = tempPasswd.length;
-            let split = tempPasswd.substr(length - 8, length);
-            let salt = sha256(RandomStringGenerator(Math.random()*25 +10));
+            let tempHash = sha256(RandomStringGenerator(Math.random()*40 + 10));
+            let length = tempHash.length;
+            let tempPasswd = tempHash.substr(length - 8, length);
+            let salt = sha256(RandomStringGenerator(Math.random()*40 + 10));
 
             await sequelize.models.user.create({
                 email:adminEmail.email,
-                passwd:sha256(split + salt),
+                accountType:'local',
+                passwd:sha256(tempPasswd + salt),
                 salt:salt,
                 lastchange:new Date(),
                 needChange:true
-            });
+            },{transaction});
 
-            await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+split);
+            await sequelize.models.employee.create({
+                email:adminEmail.email,
+                name:'admin',
+                employeenum:0,
+                grade:'admin',
+                verified:true
+            },{transaction});
+
+            await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
         }
         await transaction.commit();
     } catch (error) {

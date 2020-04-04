@@ -4,13 +4,15 @@ import {checkUserAuth} from './../../Security/identifierGenerator';
 const memberRouter = express.Router();
 
 memberRouter.get('*',(request, response, next)=>{
-    if(request.session.passport === undefined || !checkUserAuth(request.session.auth)){
-        response.send('/');
+    if(request.isUnauthenticated() || !checkUserAuth(request.session.auth)){
         return;
     }else{
         next();
     }
 });
 
+memberRouter.all('/main',(request, response)=>{
+    response.render('user/employee.html');
+});
 
 export default memberRouter;

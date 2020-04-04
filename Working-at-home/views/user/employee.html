@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LOGO</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/employee.css">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400|Raleway:700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<div>
+			<h1 class="logo">LOGO</h1>
+			<div class="header-btns">
+				<button id="logout" class="rightbtn">로그아웃</button>
+			</div>
+		</div>
+	</header>
+	<section>
+		<article class="left">
+			<div id="stream-screen">
+				<div class="stream-screen-btns">
+					<button id="stop">일시정지</button><!-- 
+				 --><button id="pause">중지&<br>업로드</button>
+				</div>
+				
+			</div>
+			<button id="stream">스트리밍 시작</button>
+			<button id="upload" class="disabled">동영상 업로드</button>
+		</article>
+		<article class="right">
+			<h2>영상목록</h2>
+			<div>
+				<ul>
+					<li class="video">
+						<img id="thumbnail" src="">
+						<h3 id="video-title">제목</h3>
+						<div class="video-btns">
+							<button id="delete">삭제</button>
+						</div>
+					</li>
+				</ul>
+				<div class="list-page-btns">
+					<button id="prev" class="left">prev</button>
+					<button id="next" class="right">next</button>
+				</div>
+			</div>
+		</article>
+	</section>
+</body>
+</html>
