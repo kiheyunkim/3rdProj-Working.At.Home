@@ -1,0 +1,41 @@
+doctype html
+html(lang='en')
+  head
+    title #{pageTitle} | #{siteName}
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(rel='stylesheet', href='/static/style.css')
+  body
+    .main-section
+      nav#ftco-navbar.navbar.navbar-expand-lg.navbar-dark.ftco_navbar.bg-dark.ftco-navbar-light
+        .container
+          a.navbar-brand(href='index.html')
+      section.hero-wrap(style='background-image: url(/static/bg_1.jpg);')
+        .overlay
+        .container
+          .row.description.align-items-center.justify-content-center
+            ul.portal_cover
+              li
+                a(href=routes.join)
+                  | Admin 
+                  em
+                    img(src='/static/left.png')
+                  span Sign Up
+              li
+                a(href=routes.join)
+                  | Employee 
+                  em
+                    img(src='/static/right.png')     
+                  span Sign Up
+              li
+                a(href=routes.login)
+                  
+
+            .col-md-8.text-center
+              .text
+                h2 Work Home💻
+                h4.mb-5 안시우 해킹해 볼 수있으면 해보시지!
+                a(href=routes.login)
+                  span Login    
+
+              
