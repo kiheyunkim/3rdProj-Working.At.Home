@@ -2,23 +2,36 @@
 const ROOT = "/";
 
 //Global한 영역
+const GLOBAL_ROOT = ROOT;
 const FIRST_HOME = "/first_home";
-const JOIN = "/join";
-const LOGIN = "/login";
 const LOGOUT = "/logout";
-const SEARCH = "/search";
-const ABOUT = "/about";
 
 //로그인 영역
-const GITHUB_LOGIN = "/auth/github"; //Github 영역
-const GITHUB_CALLBACK = "/auth/github/callback";
-const GOOGLE_LOGIN = "/auth/goolge";//Google 영역
-const GOOGLE_CALLBACK = "/auth/google/callback";
-const FACEBOOK_LOGIN = "/auth/facebook";//Facebook 영역
-const FACEBOOK_CALLBACK = "/auth/facebook/callback";
+const LOGIN_ROOT = "/login"
+const PASSPORT_CALLBACK = "/auth/passport/callback";
+//const GITHUB_CALLBACK = "/auth/github/callback";
+//const GOOGLE_CALLBACK = "/auth/google/callback";
+//const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 
+//ACCOUNT 영역
+const ACCOUNT_ROOT = "/account";
+const LOGIN = "/login";
+const JOIN = "/join";
+const PASSWORD_RESET ="/";
+const GITHUB_LOGIN = "/auth/github"; //Github 영역
+const GOOGLE_LOGIN = "/auth/goolge";//Google 영역
+const FACEBOOK_LOGIN = "/auth/facebook";//Facebook 영역
+
+
+//ACCOUNTAUTH(가칭)영역
+const ACCOUNT_AUTH_ROOT = "/accountAuth";
+const SOCIAL_JOIN = "/socialJoin";
+const ACCOUNT_AUTH = "/accountAuth";
+const QUESTION = "/question";
 
 //사용자 영역
+const SEARCH = "/search";
+const ABOUT = "/about";
 const USERS = "/users";
 const USER_DETAIL = "/:id";
 const EDIT_PROFILE = "/edit-profile";
@@ -34,29 +47,34 @@ const DELETE_VIDEO = "/:id/delete";
 
 export default {
   global:{
-      first_home: FIRST_HOME,
-      root: ROOT,
-      join: JOIN,
-      search: SEARCH
+    origin:ROOT,
+    root: ROOT,
+    first_home: FIRST_HOME,
+    passportCallback: PASSPORT_CALLBACK,
+    logout:LOGOUT
   },
   login:{
+    origin:LOGIN_ROOT,
     root: ROOT,
-    local:{
-      login: LOGIN,
+    account:{
+      origin:LOGIN_ROOT+ACCOUNT_ROOT,
+      root: ROOT,
+      login:LOGIN,
+      join:JOIN,
+      reset:PASSWORD_RESET,
+      social:{
+        github:GITHUB_LOGIN,
+        google:GOOGLE_LOGIN,
+        facebook:FACEBOOK_LOGIN
+      }
     },
-    github:{
-      github_login: GITHUB_LOGIN,
-      github_callback: GITHUB_CALLBACK
-    },
-    google:{
-      google_login: GOOGLE_LOGIN,
-      google_callback: GOOGLE_CALLBACK
-    },
-    facebook:{
-      facebook_login: FACEBOOK_LOGIN,
-      facebook_callback: FACEBOOK_CALLBACK,
-    },
-    logout: LOGOUT,
+    accountAuth:{
+      origin:LOGIN_ROOT+ACCOUNT_AUTH_ROOT,
+      root: ROOT,
+      socialJoin:SOCIAL_JOIN,
+      accountAuth:ACCOUNT_AUTH,
+      question:QUESTION   //가입하시겠습니까?
+    }
   },
   user:{
       root: ROOT,

@@ -14,19 +14,27 @@ let addUserModel = (sequelize) => {
         },
         passwd:{
             type:DataTypes.STRING(64),
-            allowNull:true
+            allowNull:false
         },
         salt:{
             type:DataTypes.STRING(64),
-            allowNull:true
+            allowNull:false
+        },
+        verification:{
+            type:DataTypes.STRING(8),
+            allowNull:false
+        },
+        verified:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false
         },
         lastchange:{
             type:DataTypes.DATE(),
-            allowNull:true
+            allowNull:false
         },
         needChange:{
             type:DataTypes.BOOLEAN,
-            allowNull:true
+            allowNull:false
         }
     },{
         sequelize,

@@ -103,6 +103,7 @@ export default (app)=>{
               throw new Error('passwd Not Match');
           }
         }catch(error){
+          console.log(error);
           return done(null, false);
         }
 

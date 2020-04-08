@@ -2,7 +2,7 @@ extends layouts/Main
 
 block content
     .form-container
-        form(action=routes.login, method="post")
+        form(action=(routes.login.account.origin + routes.login.account.login), method="post")
             input(type="email", name="username", placeholder="이메일",required=true)
             input(type="password", name="password", placeholder="패스워드",required=true)
             input(type="submit",value="로그인 하기")

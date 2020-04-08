@@ -28,6 +28,8 @@ export default async ()=>{
                 accountType:'local',
                 passwd:sha256(tempPasswd + salt),
                 salt:salt,
+                verification:'',
+                verified:true,
                 lastchange:new Date(),
                 needChange:true
             },{transaction});
@@ -39,7 +41,7 @@ export default async ()=>{
                 grade:'admin',
                 verified:true
             },{transaction});
-            console.log(tempPasswd);
+            
             await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
         }
         await transaction.commit();

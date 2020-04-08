@@ -15,6 +15,10 @@ let addWhiteListModel = (sequelize) => {
         name:{
             type:DataTypes.STRING,
             allowNull:false
+        },
+        grade:{
+            type:DataTypes.STRING(20),
+            allowNull:false
         }
     },{
         sequelize,

@@ -1,6 +1,5 @@
 {
     "Global":"/",
     "Login":"/login",
-    "User":"/user",
-    "Video":"/video"
+    "account":"/login/account"
 }

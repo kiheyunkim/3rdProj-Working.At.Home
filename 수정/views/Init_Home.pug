@@ -16,26 +16,25 @@ html(lang='en')
           .row.description.align-items-center.justify-content-center
             ul.portal_cover
               li
-                a(href=routes.join)
+                a(href=(routes.login.account.origin + routes.login.account.join))
                   | Admin 
                   em
                     img(src='/static/left.png')
                   span Sign Up
               li
-                a(href=routes.join)
+                a(href=(routes.login.account.origin + routes.login.account.join))
                   | Employee 
                   em
                     img(src='/static/right.png')     
                   span Sign Up
               li
-                a(href=routes.login)
+                a(href=(routes.login.account.origin + routes.login.account.login))
                   
 
             .col-md-8.text-center
               .text
                 h2 Work Home💻
                 h4.mb-5 안시우 해킹해 볼 수있으면 해보시지!
-                a(href=routes.login)
                   span Login    
 
               
