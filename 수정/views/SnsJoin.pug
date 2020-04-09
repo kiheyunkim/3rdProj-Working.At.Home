@@ -1,0 +1,11 @@
+extends layouts/Main
+
+block content
+    .form-container
+        .title 
+            h1 Working at Home 계정 만들기
+        form(action=(href=(routes.login.accountAuth.sns.origin + routes.login.accountAuth.sns.socialJoin)), method="post")
+            input(type="text", name="email", placeholder="이메일",disabled=true, value=`${email}` )
+            input(type="text", name="name", placeholder="성명" ,pattern = "[가-힣]{2,4}|[a-zA-Z]{2,10}",title = "올바르지 않은 이름입니다.",required=true)
+            input(type="test", name="employeenum", placeholder="사번",required=true)
+            input(type="submit",value="계정 등록하기✅")

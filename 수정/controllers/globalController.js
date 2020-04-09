@@ -1,22 +1,25 @@
 import {checkBlackList, addBlackListCount} from './../Security/BlackList';
-
+import {checkAdminAuth, checkUserAuth} from './../Security/IdentifierGenerator';
+import routes from './../routers/RouterPath';
+import passport from 'passport'
 export const globalFirewall = (request,response,next)=>{
-  console.log(request.session);
   if(checkBlackList(request.socket.remoteAddress) === -1){
-    response.status(404).send('IP가 차단되었습니다. 관리자에게 문의하세요');
-    //ToDO -> 오류 통보
+    response.render('Info',{message:"IP가 차단되었습니다. 관리자에게 문의하세요.",infoType:'home'});
     return;
   }
 
   if(request.session.remoteip === undefined){
     request.session.remoteip = request.socket.remoteAddress;
-  }else{
-    if(request.session.remoteip !== request.socket.remoteAddress){
-        addBlackListCount(request.session.remoteip);
-        request.logout();
-        return;
-    }
   }
+
+  
+  if(request.session.remoteip !== request.socket.remoteAddress){
+    addBlackListCount(request.session.remoteip);
+    request.logout();
+    response.redirect('/');
+    return;
+  }
+
   next();
 }
 
@@ -31,13 +34,27 @@ export const logout = (request,response)=>{
   }
 }
 
-export const passportCallBack = (request, response) => {
-  if(checkAdminAuth(request.session.auth)){
-    //ToDO -> 관리자에 대한 이동
-  }else if(checkUserAuth(reuqest,session,auth)){
-    //ToDo -> 일반 사용자에 대한 이동
+export const githubCallback = passport.authenticate('github', { failureRedirect: '/' ,successRedirect:'/postCallback'});
+export const googleCallback = passport.authenticate('google', { failureRedirect: '/' ,successRedirect:'/postCallback'});
+export const facebookCallback = passport.authenticate('facebook', { failureRedirect: '/' ,successRedirect:'/postCallback'});
+export const kakaoCallback = passport.authenticate('kakao', { failureRedirect: '/' ,successRedirect:'/postCallback'});
+
+export const postCallback = (request, response) => {
+  console.log(request.session);
+  if(request.isAuthenticated()){
+    console.log(request.session.auth);
+    if(checkAdminAuth(request.session.auth) || checkUserAuth(request.session.auth)){
+      response.redirect('/');
+      return;
+    }else{
+      if(request.user.type === 'local'){
+        response.redirect(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth);
+      }else{
+        response.render('question',{pageTitle:"Join?"});
+      }
+    }
   }else{
-    //건방진 접근 -> 차단
+    addBlackListCount(request.session.remoteip);
+    response.redirect('/');
   }
-  //res.redirect(routes.home);
 };

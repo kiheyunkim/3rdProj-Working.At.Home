@@ -1,23 +1,24 @@
 //공통
 const ROOT = "/";
-
+const ALL = "*";
 //Global한 영역
 const GLOBAL_ROOT = ROOT;
 const FIRST_HOME = "/first_home";
 const LOGOUT = "/logout";
+const GITHUB_CALLBACK = "/callback/github";
+const GOOGLE_CALLBACK = "/callback/google";
+const FACEBOOK_CALLBACK = "/callback/facebook";
+const KAKAO_CALLBACK = "/callback/kakao";
+const POST_CALLBACK = "/postCallback";
 
 //로그인 영역
 const LOGIN_ROOT = "/login"
-const PASSPORT_CALLBACK = "/auth/passport/callback";
-//const GITHUB_CALLBACK = "/auth/github/callback";
-//const GOOGLE_CALLBACK = "/auth/google/callback";
-//const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 
 //ACCOUNT 영역
 const ACCOUNT_ROOT = "/account";
 const LOGIN = "/login";
 const JOIN = "/join";
-const PASSWORD_RESET ="/";
+const PASSWORD_RESET ="/passwordReset";
 const GITHUB_LOGIN = "/auth/github"; //Github 영역
 const GOOGLE_LOGIN = "/auth/goolge";//Google 영역
 const FACEBOOK_LOGIN = "/auth/facebook";//Facebook 영역
@@ -25,6 +26,11 @@ const FACEBOOK_LOGIN = "/auth/facebook";//Facebook 영역
 
 //ACCOUNTAUTH(가칭)영역
 const ACCOUNT_AUTH_ROOT = "/accountAuth";
+//Local
+const LOCAL_ACCOUNT_AUTH_ROOT = '/local';
+const LOCAL_ACCOUNT_AUTH = '/localAuth';
+//SNS
+const SNS_ACCOUNT_AUTH_ROOT = '/local';
 const SOCIAL_JOIN = "/socialJoin";
 const ACCOUNT_AUTH = "/accountAuth";
 const QUESTION = "/question";
@@ -49,16 +55,25 @@ export default {
   global:{
     origin:ROOT,
     root: ROOT,
+    all:ALL,
     first_home: FIRST_HOME,
-    passportCallback: PASSPORT_CALLBACK,
+    passportCallback: {
+      github:GITHUB_CALLBACK,
+      google:GOOGLE_CALLBACK,
+      facebook:FACEBOOK_CALLBACK,
+      kakao:KAKAO_CALLBACK,
+      postCallBack:POST_CALLBACK
+    },
     logout:LOGOUT
   },
   login:{
     origin:LOGIN_ROOT,
     root: ROOT,
+    all:ALL,
     account:{
       origin:LOGIN_ROOT+ACCOUNT_ROOT,
       root: ROOT,
+      all:ALL,
       login:LOGIN,
       join:JOIN,
       reset:PASSWORD_RESET,
@@ -71,9 +86,19 @@ export default {
     accountAuth:{
       origin:LOGIN_ROOT+ACCOUNT_AUTH_ROOT,
       root: ROOT,
-      socialJoin:SOCIAL_JOIN,
-      accountAuth:ACCOUNT_AUTH,
-      question:QUESTION   //가입하시겠습니까?
+      all:ALL,
+      local:{
+        origin:LOGIN_ROOT + ACCOUNT_AUTH_ROOT + LOCAL_ACCOUNT_AUTH_ROOT,
+        all:ALL,
+        accountAuth:LOCAL_ACCOUNT_AUTH
+      },
+      sns:{
+        origin:LOGIN_ROOT + ACCOUNT_AUTH_ROOT + LOCAL_ACCOUNT_AUTH_ROOT,
+        all:ALL,
+        socialJoin:SOCIAL_JOIN,
+        question:QUESTION   //가입하시겠습니까?
+      }
+
     }
   },
   user:{

@@ -9,13 +9,10 @@ dotenv.config();
 
 import { localsMiddleware } from "./middlewares";
 
-import AddSession from './controllers/Sessions';
-import addPassport from "./controllers/passport";
+import AddSession from './functions/Sessions';
 import addRouter from './routers/ExpressRouter';
 import {setIdentifier} from './Security/identifierGenerator';
 import sequelizeInit from './sequelizeInit';
-
-console.log(global);
 
 const app = express();
 
@@ -31,11 +28,9 @@ app.use(morgan("dev"));
 
 setIdentifier();
 AddSession(app);
-addPassport(app);
-
 app.use(localsMiddleware);  //!!!!!
-
 addRouter(app);
+
 (async ()=>{
   let startup = await sequelizeInit();
   if(!startup){
@@ -46,4 +41,4 @@ addRouter(app);
 
 export default app;
 
-//비번 d86adfff
+//비번 0b0bfd01

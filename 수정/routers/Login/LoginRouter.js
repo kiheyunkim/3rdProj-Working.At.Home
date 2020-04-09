@@ -2,14 +2,12 @@ import express from 'express';
 import router from '../RouterPath';
 
 import {
-    loginFirewall,
-    passportCallBack
+    loginFirewall
   } from '../../controllers/loginController';
 
 let loginRouterPath = router.login;
 const loginRouter = express.Router();
 
-loginRouter.all(loginRouterPath.root, loginFirewall);
-loginRouter.get(loginRouterPath.passportCallback, passportCallBack);
+loginRouter.all(loginRouterPath.all, loginFirewall);
 
 export default loginRouter;

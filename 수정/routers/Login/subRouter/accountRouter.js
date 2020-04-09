@@ -15,19 +15,17 @@ import {
 } from "./../../../controllers/accountController";
 
 let accountRouterPath = router.login.account;
-const globalRouter = express.Router();
+const accountRouter = express.Router();
 
-globalRouter.all(accountRouterPath.root, accountFirewall);
-globalRouter.get(accountRouterPath.login, getLogin);
-globalRouter.post(accountRouterPath.login, postLogin);
-globalRouter.get(accountRouterPath.join, getJoin);
-globalRouter.post(accountRouterPath.join, postJoin);
-//페이지 없음
-globalRouter.get(accountRouterPath.reset, getPasswordReset)
-globalRouter.post(accountRouterPath.reset, postPasswordReset)
-//
-globalRouter.get(accountRouterPath.social.github, githubLogin);
-globalRouter.get(accountRouterPath.social.google, googleLogin);
-globalRouter.get(accountRouterPath.social.facebook, facebookLogin);
+accountRouter.all(accountRouterPath.all, accountFirewall);//완성
+accountRouter.get(accountRouterPath.login, getLogin);//완성
+accountRouter.post(accountRouterPath.login, postLogin);//완성
+accountRouter.get(accountRouterPath.join, getJoin);//완성
+accountRouter.post(accountRouterPath.join, postJoin);//완성
+accountRouter.get(accountRouterPath.reset, getPasswordReset)//완성
+accountRouter.post(accountRouterPath.reset, postPasswordReset)//완성
+accountRouter.get(accountRouterPath.social.github, githubLogin);//완성
+accountRouter.get(accountRouterPath.social.google, googleLogin);//완성
+accountRouter.get(accountRouterPath.social.facebook, facebookLogin);//완성
 
-export default globalRouter;
+export default accountRouter;

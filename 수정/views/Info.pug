@@ -1,0 +1,12 @@
+extends layouts/Main
+
+block content
+    .form-container
+        .title 
+            h1 #{message}
+        form(me thod="get")
+            if infoType === "back"
+                input(type="submit", value="뒤로가기", onclick="history.back()")
+            if infoType === "home"
+                input(type="submit", value="홈으로가기", onclick="location.href ='/'")
+            

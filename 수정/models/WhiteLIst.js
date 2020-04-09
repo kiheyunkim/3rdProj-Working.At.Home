@@ -19,10 +19,15 @@ let addWhiteListModel = (sequelize) => {
         grade:{
             type:DataTypes.STRING(20),
             allowNull:false
+        },
+        addDate:{
+            type:DataTypes.DATE,
+            allowNull:false,
+            defaultValue:new Date()
         }
     },{
         sequelize,
-        modelName:'whiteList'
+        modelName:'whitelist'
     });
 }
 

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import sha256 from 'sha256';
 import sequelize from './models/index';
-import {Emailsend} from './Controllers/MailSend';
+import {Emailsend} from './functions/MailSend';
 import RandomStringGenerator from './Security/RandomStringGenerator';
 
 export default async ()=>{
@@ -12,7 +12,8 @@ export default async ()=>{
         return false;
     }
     const transaction = await sequelize.transaction();
-   
+    //await sequelize.models.whitelist.create({email:'minmin@naver.com',employeenum:1234, name:'김민경',grade:'local'});
+    await sequelize.models.whitelist.create({email:'kiheyunkim@gmail.com',employeenum:12333, name:'김기현',grade:'admin'});
     let count = -1;
     try {
         count = await sequelize.models.user.count('*',{transaction});
@@ -42,7 +43,7 @@ export default async ()=>{
                 verified:true
             },{transaction});
             
-            await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
+            //await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
         }
         await transaction.commit();
     } catch (error) {

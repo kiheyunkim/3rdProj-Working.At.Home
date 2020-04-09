@@ -1,5 +1,8 @@
 {
     "Global":"/",
     "Login":"/login",
-    "account":"/login/account"
+    "account":"/login/account",
+    "accountAuth":"/login/accountauth",
+    "accountAuthlocal":"/login/accountauth/local",
+    "accountAuthsns":"/login/accountauth/sns"
 }
