@@ -8,8 +8,6 @@ import RandomStringGenerator from '../Security/RandomStringGenerator';
 import sha256 from 'sha256';
 
 export const accountFirewall = (request,response,next)=>{
-    console.log('accountFirewall'); 
-    console.log(request.isAuthenticated());
     if(!request.isAuthenticated()){
         next();
     }else{
@@ -57,45 +55,42 @@ export const postJoin = async (request, response) => {
       return;
     } 
     
-  
     let whitelistResult = null;
     let existCheck = null;
     try {
-      whitelistResult = await sequelize.models.whitelist.count({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}});
+      whitelistResult = await sequelize.models.whitelist.findOne({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}});
       existCheck = await sequelize.models.user.count({where:{email:emailInput}});
     } catch (error) {
       response.render('Info',{message:"DB 오류.",infoType:'back'});
+      return;
     }
   
-    if(whitelistResult !== 1 || existCheck !== 0 ||  ((new Date()).getTime() - whitelistResult.addDate).getTime() < 3 * 60 * 60 * 1000){
-      console.log(whitelistResult, existCheck);
+    let currentDate = new Date();
+    if(whitelistResult === null || existCheck !== 0 ||  (currentDate.getTime() - whitelistResult.dataValues.addDate.getTime()) > 3 * 60 * 60 * 1000){
       response.render('Info',{message:"가입불가능한 계정입니다.",infoType:'back'});
       return;
     }
     
-    try {
-      whitelistResult = await sequelize.models.whitelist.findOne({where:{email:emailInput,employeenum:emloyeeNumInput, name:nameInput}});
-    } catch (error) {
-      response.render('Info',{message:"DB 오류.",infoType:'back'});
-      return;
-    }
-    
-    let grade = whitelistResult.grade;
+    let grade = whitelistResult.dataValues.grade;
     let tempHash = sha256(RandomStringGenerator(Math.random()*40 + 10));
     let length = tempHash.length;
     let verificationStr = tempHash.substr(length - 8, length);
     let newSalt = sha256(RandomStringGenerator(Math.random()*40 + 10));
+    console.log();
     
     let transaction = null;
 
     try {
       transaction = await sequelize.transaction();
-      await sequelize.models.whitelist.destroy({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}},transaction);
-      await sequelize.models.user.create({email:emailInput, accountType:'local',passwd:sha256(passwordInput + newSalt),salt:newSalt,verification:verificationStr,verified:false, lastchange:new Date(), needChange:false}, transaction);
-      await sequelize.models.employee.create({email:emailInput, name:nameInput, employeenum:emloyeeNumInput, grade:grade,verified:false},transaction);
-      //await Emailsend(emailInput,'인증번호입니다',verificationStr);
-      
-      transaction.commit();
+      await sequelize.models.whitelist.destroy({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}},{transaction});
+      let result333 = await sequelize.models.user.create({email:emailInput, accountType:"local",passwd:sha256(passwordInput + newSalt),salt:newSalt,verification:verificationStr,verified:false, lastchange:new Date(), needChange:false}, {transaction});
+      console.log(result333);
+      console.log({email:emailInput, name:'김민경', employeenum:parseInt(emloyeeNumInput), grade:'admin', verified:false}),{transaction};
+      let result222 = await sequelize.models.employee.create({email:emailInput, name:'김민경', employeenum:parseInt(emloyeeNumInput), grade:'admin', verified:false},{transaction});
+      console.log(result222);
+      //await Emailsend(emailInput, '인증번호입니다', verificationStr);
+
+      transaction.commit(); 
     } catch (error) {
       console.log(error);
       if(transaction !== null){
@@ -105,7 +100,7 @@ export const postJoin = async (request, response) => {
       return;
     }
 
-    response.render('Info',{message:"가입이 완료되었습니다.",infoType:'back'});
+    response.render('Info',{message:"가입이 완료되었습니다.", infoType:'login'});
 };
 
 export const getPasswordReset = (request,response)=>{
@@ -177,7 +172,6 @@ export const postPasswordReset = async (request,response)=>{
     let tempPasswd = tempHash.substr(length - 8, length);
     let newSalt = sha256(RandomStringGenerator(parseInt(Math.random()*40) + 10));
   
-    
     try {
         const transaction = await sequelize.transaction();
         await sequelize.models.user.update({passwd:sha256(tempPasswd + newSalt),salt:newSalt,needChange:true,lastchange:new Date()},{where:{email:emailInput}},{transaction});
@@ -189,6 +183,8 @@ export const postPasswordReset = async (request,response)=>{
         response.render('Info',{message:"비밀번호 변경에 실패했습니다. 다시 시도해주세요.",infoType:'back'});
         return;
     }
+
+    response.render('Info',{message:"비밀번호 변경에 실패했습니다. 다시 시도해주세요.",infoType:'exit'});
 };
 
 export const getLogin = (request, response) => {
@@ -197,20 +193,18 @@ export const getLogin = (request, response) => {
 
 //##0.Local 영역
 export const postLogin = passport.authenticate('local',{
-    successRedirect: routes.global.root,
-    failureRedirect: routes.login.account.origin + routes.login.account.login
+    successRedirect: '/postCallback',
+    failureRedirect: routes.global.root
 });
 
-//##1.Github 영역
 export const githubLogin = passport.authenticate("github");
-//#2.Google 영역
-export const googleLogin = passport.authenticate("google", { scope: [
+
+export const googleLogin = passport.authenticate('google', { scope: [
     'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'],
     prompt: "select_account",
     accessType:"offline"
 });
 
-//#3.Facebook 영역
 export const facebookLogin = passport.authenticate("facebook");
 
 export const getJoinSocial = (request, response) => {

@@ -1,7 +1,6 @@
 import { addBlackListCount,checkBlackList } from "../Security/BlackList";
 
 export const loginFirewall = (request,response,next)=>{
-    console.log('loginFirewall');
     if(request.isUnauthenticated() || (request.isAuthenticated() && request.session.auth === undefined)){
         let value = checkBlackList(request.socket.remoteAddress);
         if(value !== 0){

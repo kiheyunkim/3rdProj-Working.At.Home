@@ -13,9 +13,10 @@ import AddSession from './functions/Sessions';
 import addRouter from './routers/ExpressRouter';
 import {setIdentifier} from './Security/identifierGenerator';
 import sequelizeInit from './sequelizeInit';
+import addPassport from './functions/passport';
 
 const app = express();
-
+setIdentifier();
 app.use(helmet());
 app.set("view engine", "pug");
 app.use("/uploads", express.static("uploads"));
@@ -26,8 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan("dev"));
 
-setIdentifier();
+
 AddSession(app);
+addPassport(app);
 app.use(localsMiddleware);  //!!!!!
 addRouter(app);
 

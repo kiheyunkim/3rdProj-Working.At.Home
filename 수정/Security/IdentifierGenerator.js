@@ -1,12 +1,15 @@
 import RandomStringGenerator from './RandomStringGenerator';
 import Sha256 from 'sha256';
 
-let adminIdentifier = new Set();
-let userIdentifier = new Set();
+let adminIdentifier = null;
+let userIdentifier = null;
+let isInitialized = false;
 
 let setIdentifier = ()=>{
     let tempSet = new Set();
-    
+    adminIdentifier = new Set();
+    userIdentifier = new Set();
+
     for(let i=0;i<10;++i){
         let key = Sha256(RandomStringGenerator(parseInt(Math.random()*100)));
         while(tempSet.has(key)){
@@ -43,6 +46,11 @@ let checkUserAuth = (key) => {
 }
 
 let getAdminAuth = () =>{
+    if(!isInitialized){
+        setIdentifier();
+        isInitialized=true;
+    }
+
     let count = parseInt(Math.random()*(adminIdentifier.size-1));
     let retval = adminIdentifier.values();
     let iterator = retval.next();
@@ -55,6 +63,11 @@ let getAdminAuth = () =>{
 }
 
 let getUserAuth = () =>{
+    if(!isInitialized){
+        setIdentifier();
+        isInitialized=true;
+    }
+    
     let count = parseInt(Math.random()*(userIdentifier.size-1));
     let retval= userIdentifier.values();
     let iterator = retval.next();

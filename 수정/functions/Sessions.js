@@ -2,7 +2,6 @@ import fs from 'fs';
 import sha256 from 'sha256';
 import RandomStringGenerator from '../Security/RandomStringGenerator';
 import session from 'express-session';
-import addPassport from "./passport";
 const MySQLStore = require('express-mysql-session')(session);
 const connectionInfo = JSON.parse(fs.readFileSync(__dirname+'/../AuthInfo/dbAuthInfo.json',{encoding:'UTF-8'}));
 
@@ -21,11 +20,9 @@ export default(app)=>{
 
     app.use(session({
         resave : false,
-        saveUninitialized : true,
+        saveUninitialized : false,
         secret : sha256(RandomStringGenerator(parseInt(Math.random()*50)).toString()),
         store : sessionStore,
         cookie : { secure : false }
     }));
-
-    addPassport(app);
 }

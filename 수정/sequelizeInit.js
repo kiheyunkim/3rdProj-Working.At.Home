@@ -12,12 +12,12 @@ export default async ()=>{
         return false;
     }
     const transaction = await sequelize.transaction();
-    //await sequelize.models.whitelist.create({email:'minmin@naver.com',employeenum:1234, name:'김민경',grade:'local'});
-    await sequelize.models.whitelist.create({email:'kiheyunkim@gmail.com',employeenum:12333, name:'김기현',grade:'admin'});
+    
     let count = -1;
+    count = await sequelize.models.user.count('*',{transaction});
     try {
-        count = await sequelize.models.user.count('*',{transaction});
         if(count === 0){
+            await sequelize.models.whitelist.create({email:'minmin@naver.com',employeenum:1234, name:'김민경',grade:'local'},{transaction});
             let adminEmail = JSON.parse(fs.readFileSync(__dirname+'/AuthInfo/admin.json',{encoding:'UTF-8'}));
             let tempHash = sha256(RandomStringGenerator(Math.random()*40 + 10));
             let length = tempHash.length;

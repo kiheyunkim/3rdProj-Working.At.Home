@@ -1,12 +1,22 @@
 //Video 영역에서의 컨트롤 함수
 import routes from "../routes";
 import Video from "../models/Video";
+import { request } from "express";
 
-export const getUpload = (req, res) => {
-  res.render("Upload", { pageTitle: "UPLOAD" });
+export const videoFireWall = (request, response, next)=>{
+  next();
+}
+
+export const getVideoHome = async (request,response)=>{
+  let item = [];
+  response.render('Home',{ pageTitle: "videoHome", "videos":item});
+}
+
+export const getUpload = (request, response) => {
+  response.render("Upload", { pageTitle: "UPLOAD" });
 };
 
-export const postUpload = async (req, res) => {
+export const postUpload = async (request, response) => {
   const {
     body: { title, description },
     file: { path },

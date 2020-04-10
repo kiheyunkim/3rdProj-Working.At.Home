@@ -19,7 +19,7 @@ header.header
 
                 else 
                     li
-                        a(href=`/videos${routes.upload}`) 업로드하기
+                        a(href=(routes.working.video.origin+routes.working.video.upload)) 업로드하기
                     li
                         a(href=`/users${routes.me}`) 프로필 보기
                     li

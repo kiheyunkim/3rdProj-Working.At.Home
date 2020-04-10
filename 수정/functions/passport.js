@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import sha256 from 'sha256';
 import passport from "passport";
 import GithubStrategy from "passport-github2";
-import Strategy  from "passport-google-oauth20";
+import GoogleStrategy from "passport-google-oauth20";
 import LocalStrategy from 'passport-local';
 import FaceBookStrategy from "passport-facebook";
 import {getAdminAuth, getUserAuth} from '../Security/identifierGenerator'
@@ -24,10 +24,10 @@ let processingStrategy = async (accessToken, refreshToken, profile, done, type)=
     picUrl = `https://graph.facebook.com/${id}/picture?type=large`;
   }
   
-  let info = {name, picture:picUrl, email, type:type};
+  let info = {name, picture:picUrl, email};
+  
   try {
     let result = await sequelize.models.user.findOne({where:{email:info.email, accountType:type}});
-
     if(result === 1){
       let userInfo = await sequelize.models.employee.findOne({where:{email:info.email}});
       if(userInfo.grade === 'admin'){
@@ -43,10 +43,48 @@ let processingStrategy = async (accessToken, refreshToken, profile, done, type)=
 }
 
 export default (app)=>{
+  dotenv.config();
   app.use(passport.initialize());
   app.use(passport.session());
-  dotenv.config();
 
+  //Google 정책//OK
+  passport.use(new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: `https://127.0.0.1:8443${routes.global.passportCallback.google}`
+      },
+      async (accessToken, refreshToken, profile, done)=>
+        processingStrategy(accessToken, refreshToken, profile, done,'google')
+  )
+  );
+  
+  //Github 정책//OK
+  passport.use(new GithubStrategy(
+      {
+        clientID: process.env.GITHUB_ID,
+        clientSecret: process.env.GITHUB_SECRET,
+        callbackURL: `https://127.0.0.1:8443${routes.global.passportCallback.github}`,
+        scope: ["email"],
+      },
+      async (accessToken, refreshToken, profile, done)=>
+        processingStrategy(accessToken, refreshToken, profile, done,'github')
+    )
+  );
+
+  //Facebook 정책
+  passport.use(new FaceBookStrategy(
+      {
+        clientID: process.env.FACEBOOK_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
+        callbackURL: `https://7264656a.ngrok.io${routes.facebook_callback}`,
+        profileFields: ["id", "displayName", "photos", "email"],
+        scope: ["public_profile", "email"],
+      },
+      async (accessToken, refreshToken, profile, done)=>
+        processingStrategy(accessToken, refreshToken, profile, done,'facebook')
+    )
+  );
 
   //로컬 정책//OK
   passport.use(new LocalStrategy({
@@ -64,6 +102,7 @@ export default (app)=>{
               throw new Error('passwd Not Match');
           }
         }catch(error){
+          console.log(error);
           return done(null, false);
         }
 
@@ -71,45 +110,6 @@ export default (app)=>{
      })
   );
 
-  //Google 정책//OK
-  passport.use(new Strategy(
-      {
-        clientID: '586489203795-vhnnc7ugcctann8atjsl3qva08gmm1e8.apps.googleusercontent.com',
-        clientSecret: 'Dc6Zjw7AY_YwQAGBUe3bsL9d',
-        callbackURL: 'https://127.0.0.1:8443/callback/google'
-      },
-      async (accessToken, refreshToken, profile, done)=>
-          processingStrategy(accessToken,refreshToken,profile,done,'google')
-  ));
-  
-  //Github 정책//OK
-  passport.use(new GithubStrategy(
-      {
-        clientID: process.env.GITHUB_ID,
-        clientSecret: process.env.GITHUB_SECRET,
-        callbackURL: `http://localhost:9000${routes.github_callback}`,
-        scope: ["email"]
-      },
-      (accessToken, refreshToken, profile, done)=>
-        processingStrategy(accessToken, refreshToken, profile, done,'github')
-    )
-  );
-
-  //Facebook 정책
-  passport.use(new FaceBookStrategy(
-      {
-        clientID: process.env.FACEBOOK_ID,
-        clientSecret: process.env.FACEBOOK_SECRET,
-        callbackURL: `https://7264656a.ngrok.io${routes.facebook_callback}`,
-        profileFields: ["id", "displayName", "photos", "email"],
-        scope: ["public_profile", "email"],
-      },
-      (accessToken, refreshToken, profile, done)=>
-        processingStrategy(accessToken, refreshToken, profile, done,'facebook')
-    )
-  );
-
-
-  passport.serializeUser((user, done) =>done(null, user));
+  passport.serializeUser((user, done) => done(null, user));
   passport.deserializeUser((user, done) => done(null, user));
 }
