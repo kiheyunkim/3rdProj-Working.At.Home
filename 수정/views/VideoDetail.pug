@@ -3,7 +3,7 @@ extends layouts/Main
 block content 
     .video-detail__container
         .video__player
-            video(src=`/${video.fileUrl}`,controls=true)
+            video(src=routes.working.file.origin + routes.working.file.fileget + '/?fileName=' +video,controls=true)
         .video__info
             a(href=routes.editVideo(video.id))
                 button 비디오 편집

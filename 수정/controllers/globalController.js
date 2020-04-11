@@ -36,8 +36,8 @@ export const firstHome = (request, response) => {
 export const logout = (request,response)=>{
   if(request.isAuthenticated()){
     request.logout();
-    response.redirect(routes.global.root);
   }
+  response.redirect(routes.global.root);
 }
 
 export const githubCallback = passport.authenticate('github', { failureRedirect: '/error' ,successRedirect:'/postCallback'});
@@ -47,27 +47,59 @@ export const kakaoCallback = passport.authenticate('kakao', { failureRedirect: '
 
 export const postCallback = async (request, response) => {
   if(request.isAuthenticated()){
-    let find = await sequelize.models.employee.findOne({where:{email:request.user.email}});
-    if(find.dataValues.grade === 'admin'){
-      request.session.auth = getAdminAuth();
-    }else if(find.dataValues.grade === 'user'){
-      request.session.auth = getUserAuth();
+    let findEmployee = null;
+    let findUser = null;
+    try {
+      findEmployee = await sequelize.models.employee.findOne({where:{email:request.user.email}});
+      findUser = await sequelize.models.user.findOne({where:{email:request.user.email}});
+    } catch (error) {
+      response.render('Info',{pageTitle:'Error!', message:"DB오류",infoType:'back'});
+      return;
+    }
+  
+    let grade = findEmployee.dataValues.grade;
+    let verified = findUser.dataValues.verified;
+    let accountType = findUser.dataValues.accountType;
+
+    if((findEmployee === null && findUser === null) || accountType != request.user.type){
+      if(request.user.type !== 'local'){
+        response.render('question',{pageTitle:"Join?"});
+        return;
+      }
+    }
+    
+    console.log(request.user);
+    console.log(verified);
+    
+
+    if(!verified){
+      response.redirect(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth);
+      return;
+    }
+
+    if(accountType === request.user.type && verified){
+      if(grade === 'admin'){
+        request.session.auth = getAdminAuth();
+      }else if(grade === 'user'){
+        request.session.auth = getUserAuth();
+      }
     }
 
     if(checkAdminAuth(request.session.auth) || checkUserAuth(request.session.auth)){
       response.redirect(routes.global.root);
       return;
     }else{
-      if(request.user.type !== 'local'){
-        response.render('question',{pageTitle:"Join?"});
-      }
+      addBlackListCount(request.session.remoteip);
+      response.redirect(routes.global.root);
     }
+
   }else{
     addBlackListCount(request.session.remoteip);
-    response.redirect(routes.global.root);
+      response.redirect(routes.global.root);
+      return;
   }
 };
 
 export const getError = (request, response) => {
-  response.render('Info',{pageTitle:'Error!', message:"에러가 발생했습니다.",infoType:'back'});
+  response.render('Info',{pageTitle:'Error!', message:"실패하였습니다.",infoType:'back'});
 };

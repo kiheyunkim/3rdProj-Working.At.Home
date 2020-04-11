@@ -12,7 +12,7 @@ import {
     githubLogin,
     googleLogin,
     facebookLogin
-} from "./../../../controllers/accountController";
+} from "./../../../controllers/Login/accountController";
 
 let accountRouterPath = router.login.account;
 const accountRouter = express.Router();

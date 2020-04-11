@@ -5,7 +5,7 @@ import {
     accountAuthSnsFirewall,
     getJoinSocial,
     postJoinSocial
-} from "../../../../controllers/snsAuthController";
+} from "./../../../../controllers/Login/snsAuthController";
 
 let snsAuthRouterPath = router.login.accountAuth.sns;
 const snsAuthRouter = express.Router();

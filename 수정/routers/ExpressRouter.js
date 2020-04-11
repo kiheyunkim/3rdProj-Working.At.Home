@@ -6,6 +6,7 @@ import accountAuthRouter from './Login/subRouter/accountAuthRouter';
 import accountAuthSnsRouter from './Login/subRouter/accountAuthSubRouter/snsAuthRouter';
 import accountAuthLocalRouter from './Login/subRouter/accountAuthSubRouter/localAuthRouter';
 import workingRouter from './Working/WorkingRouter';
+import fileRouter from './Working/FileRouter'
 import userRouter from './Working/subRouter/UserRouter';
 import videoRouter from './Working/subRouter/VideoRouter';
 let routerInfo = JSON.parse(fs.readFileSync(__dirname + '/routerInfo.json',{encoding:"UTF-8"}));
@@ -20,4 +21,5 @@ export default (app)=>{
     app.use(routerInfo.working, workingRouter)
     app.use(routerInfo.video, videoRouter);
     app.use(routerInfo.user, userRouter);
+    app.use(routerInfo.file, fileRouter);
 }

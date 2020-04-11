@@ -39,11 +39,14 @@ const WORKING_ROOT = "/working";
 //비디오 영역
 const VIDEO_ROOT = '/video';
 const VIDEO_UPLOAD = '/upload';
-const VIDEO_DETAIL = "/:id";
+const VIDEO_DETAIL = "/:video";
 const EDIT_VIDEO = "/:id/edit-video";
 const DELETE_VIDEO = "/:id/delete";
 const SEARCH_VIDEO = "/:id/Search";
 
+//파일 영역
+const FILE_ROOT = "/File";
+const GET_FILE = "/getfile";
 
 //사용자 영역
 const USER_ROOT = "/user";
@@ -117,17 +120,31 @@ export default {
       origin:WORKING_ROOT + USER_ROOT,
       root: USER_ROOT,
       all:ALL,
-      
+    },
+    file:{
+      origin:WORKING_ROOT + FILE_ROOT,
+      root:ROOT,
+      all:ALL,
+      fileget:GET_FILE,
     },
     video:{
       origin:WORKING_ROOT + VIDEO_ROOT,
       root: ROOT,
       all:ALL,
       upload:VIDEO_UPLOAD,
+      //작업중
       detail:VIDEO_DETAIL,
+      
       edit:EDIT_VIDEO,
       delete:DELETE_VIDEO,
-      search:SEARCH_VIDEO
+      search:SEARCH_VIDEO,
+      convert:(id)=>{(id) => {
+        if (id) {
+          return `/videos/${id}`;
+        } else {
+          return VIDEO_DETAIL;
+        }
+      }}
     }
   }
 /*

@@ -32,6 +32,11 @@ let setIdentifier = ()=>{
 }    
 
 let checkAdminAuth = (key) => {
+    if(!isInitialized){
+        setIdentifier();
+        isInitialized=true;
+    }
+
     if(adminIdentifier.has(key)){
         return true;
     }
@@ -39,6 +44,11 @@ let checkAdminAuth = (key) => {
 }
 
 let checkUserAuth = (key) => {
+    if(!isInitialized){
+        isInitialized=true;
+        setIdentifier();
+    }
+
     if(userIdentifier.has(key)){
         return true;
     }

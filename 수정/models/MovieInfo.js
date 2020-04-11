@@ -6,28 +6,31 @@ let addMovieInfoModel = (sequelize) => {
     MovieInfo.init({
         email:{
             type:DataTypes.STRING,
-            primaryKey:1,
+            allowNull:0
+        },
+        filename:{
+            type:DataTypes.STRING(64),
             allowNull:0
         },
         path:{
             type:DataTypes.STRING,
             allowNull:0
         },
-        dateStart:{
-            type:DataTypes.DATE,
+        date:{
+            type:DataTypes.DATEONLY,
             allowNull:0
         },
-        dateEnd:{
-            type:DataTypes.DATE,
-            allowNull:0
-        },
-        evaluation:{
+        title:{
             type:DataTypes.STRING,
-            allowNull:1
+            allowNull:0
+        },
+        description:{
+            type:DataTypes.STRING,
+            allowNull:0
         }
     },{
         sequelize,
-        modelName:'movieinfo'
+        modelName:'video'
     });
 
     MovieInfo.belongsTo(User,{foreignKey:'email',targetKey:'email'});

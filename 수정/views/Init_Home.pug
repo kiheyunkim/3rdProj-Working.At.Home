@@ -16,20 +16,17 @@ html(lang='en')
           .row.description.align-items-center.justify-content-center
             ul.portal_cover
               li
-                a(href=(routes.login.account.origin + routes.login.account.join))
-                  | Admin 
+                a(href=(routes.login.account.origin + routes.login.account.login))
+                  | 로그인 
                   em
                     img(src='/static/left.png')
                   span Sign Up
               li
                 a(href=(routes.login.account.origin + routes.login.account.join))
-                  | Employee 
+                  | 회원가입 
                   em
                     img(src='/static/right.png')     
-                  span Sign Up
-              li
-                a(href=(routes.login.account.origin + routes.login.account.login))
-                  
+                  span Sign Up                 
 
             .col-md-8.text-center
               .text

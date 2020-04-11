@@ -1,16 +1,49 @@
 //Video 영역에서의 컨트롤 함수
-import routes from "../routes";
+import routes from "../routers/RouterPath";
 import Video from "../models/Video";
-import { request } from "express";
+import multer from "multer";
+import sequelize from "../models";
+
+const multerVideo = multer({ dest: "uploads/videos/" });
+
+export const uploadVideo = multerVideo.single("videoFile");
 
 export const videoFireWall = (request, response, next)=>{
   next();
 }
 
 export const getVideoHome = async (request,response)=>{
-  let item = [];
-  response.render('Home',{ pageTitle: "videoHome", "videos":item});
+  let videos = await sequelize.models.video.findAndCountAll({where:{email:request.user.email}})
+  let count = videos.count;
+  let items = [];
+
+  for(let i=0;i<count;++i){
+    items.push({title:videos.rows[i].dataValues.titlem, views:0, fileUrl:videos.rows[i].dataValues.filename});
+  }
+  
+  response.render('Home',{ pageTitle: "videoHome", videos:items});
 }
+
+
+export const videoDetail = async (request, response) => {
+  const {
+    params: { video },
+  } = request;
+
+  let findResult = null;
+  try {
+    findResult = await equelize.models.video.findOne({where:{email:request.user.email, filename:video}});
+  } catch (error) {
+    console.log(error);
+  }
+
+  if(findResult !== null){ 
+    response.render("VideoDetail", { pageTitle: findResult.title, video: video });
+  }else{
+    response.redirect(routes.global.root);
+  }
+};
+
 
 export const getUpload = (request, response) => {
   response.render("Upload", { pageTitle: "UPLOAD" });
@@ -19,34 +52,14 @@ export const getUpload = (request, response) => {
 export const postUpload = async (request, response) => {
   const {
     body: { title, description },
-    file: { path },
-  } = req;
+    file: { path,filename }
+  } = request;
 
-  const newVideo = await Video.create({
-    fileUrl: path,
-    title,
-    description,
-    creator: req.user.id,
-  });
+  await sequelize.models.video.create({email:request.user.email,filename:filename,path:path,date:new Date(),title:title,description:description});
 
-  req.user.videos.push(newVideo.id);
-  // req.user.save();
-  //res.redirect(routes.videoDetail(newVideo.id));
+  response.redirect(routes.working.video.origin + routes.working.root);
 };
 
-export const videoDetail = async (req, res) => {
-  const {
-    params: { id },
-  } = req;
-  try {
-    const video = await Video.findById(id).populate("creator");
-    res.render("VideoDetail", { pageTitle: video.title, video: video });
-    console.log(video);
-  } catch (error) {
-    console.log(error);
-    res.redirect(routes.home);
-  }
-};
 
 export const getEditVideo = async (req, res) => {
   const {

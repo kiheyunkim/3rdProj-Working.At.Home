@@ -24,7 +24,7 @@ let processingStrategy = async (accessToken, refreshToken, profile, done, type)=
     picUrl = `https://graph.facebook.com/${id}/picture?type=large`;
   }
   
-  let info = {name, picture:picUrl, email};
+  let info = {name, picture:picUrl, email, type};
   
   try {
     let result = await sequelize.models.user.findOne({where:{email:info.email, accountType:type}});

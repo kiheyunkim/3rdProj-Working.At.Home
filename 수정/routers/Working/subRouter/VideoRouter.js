@@ -5,6 +5,7 @@ import {
   videoFireWall,
   getVideoHome,
   getUpload,
+  uploadVideo,
   postUpload,
   videoDetail,
   getEditVideo,
@@ -19,7 +20,7 @@ const videoRouter = express.Router();
 videoRouter.all(VideoRouterPath.all, videoFireWall);
 videoRouter.get(VideoRouterPath.root, getVideoHome)
 videoRouter.get(VideoRouterPath.upload, getUpload);
-videoRouter.post(VideoRouterPath.upload, postUpload);
+videoRouter.post(VideoRouterPath.upload,uploadVideo, postUpload);
 videoRouter.post(VideoRouterPath.detail, videoDetail);
 videoRouter.get(VideoRouterPath.edit, getEditVideo);
 videoRouter.post(VideoRouterPath.edit, postEditVideo);

@@ -25,5 +25,4 @@ globalRouter.get(globalRouterPath.passportCallback.kakao, kakaoCallback);
 globalRouter.get(globalRouterPath.passportCallback.postCallBack, postCallback);
 globalRouter.get(globalRouterPath.error, getError);
 
-
 export default globalRouter;

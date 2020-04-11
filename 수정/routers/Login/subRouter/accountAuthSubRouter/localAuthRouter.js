@@ -5,7 +5,7 @@ import {
     accountAuthLocalFirewall,
     getAuthAccount,
     postAuthAccount
-} from "../../../../controllers/localAuthController";
+} from "./../../../../controllers/Login/localAuthController";
 
 let localAuthRouterPath = router.login.accountAuth.local;
 const localAuthRouter = express.Router();

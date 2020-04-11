@@ -1,9 +1,8 @@
 import routes from "./routers/RouterPath";
-import multer from "multer";
 
-const multerVideo = multer({ dest: "uploads/videos/" });
 
-const multerAvatar = multer({ dest: "uploads/avatar/" });
+
+//const multerAvatar = multer({ dest: "uploads/avatar/" });
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = "Working at Home";
@@ -37,6 +36,5 @@ export const OnlyPrivate = (req, res, next) => {
   }
 };
 
-export const uploadVideo = multerVideo.single("videoFile");
 
-export const uploadAvatar = multerAvatar.single("avatar");
+//export const uploadAvatar = multerAvatar.single("avatar");

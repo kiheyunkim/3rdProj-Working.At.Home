@@ -17,7 +17,7 @@ export default async ()=>{
     count = await sequelize.models.user.count('*',{transaction});
     try {
         if(count === 0){
-            await sequelize.models.whitelist.create({email:'minmin@naver.com',employeenum:1234, name:'김민경',grade:'local'},{transaction});
+            await sequelize.models.whitelist.create({email:'kiheyunkim@gmail.com',employeenum:1234, name:'김기현',grade:'admin'},{transaction});
             let adminEmail = JSON.parse(fs.readFileSync(__dirname+'/AuthInfo/admin.json',{encoding:'UTF-8'}));
             let tempHash = sha256(RandomStringGenerator(Math.random()*40 + 10));
             let length = tempHash.length;

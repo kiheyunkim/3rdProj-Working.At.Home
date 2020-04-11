@@ -6,11 +6,11 @@ block content
             h1 #{message}
         form(me thod="get")
             if infoType === "back"
-                input(type="submit", value="뒤로가기", onclick="history.back()")
+                input(type="button", value="뒤로가기", onclick="history.back()")
             if infoType === "home"
-                input(type="submit", value="홈으로가기", onclick="location.href ='/'")
+                input(type="button", value="홈으로가기", onclick="location.href ='/'")
             if infoType === "login"
-                input(type="submit", value="홈으로가기", onclick="location.href ='/login/account/login'")
+                input(type="button", value="홈으로가기", onclick="location.href ='/login/account/login'")
             if infoType === "exit"
-                input(type="submit", value="홈으로가기", onclick="window.close()")
+                input(type="button", value="홈으로가기", onclick="window.close()")
             

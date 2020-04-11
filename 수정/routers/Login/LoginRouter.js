@@ -3,7 +3,7 @@ import router from '../RouterPath';
 
 import {
     loginFirewall
-  } from '../../controllers/loginController';
+  } from '../../controllers/Login/loginController';
 
 let loginRouterPath = router.login;
 const loginRouter = express.Router();
