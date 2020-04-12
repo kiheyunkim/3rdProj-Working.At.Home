@@ -1,14 +1,22 @@
 import routes from "./routers/RouterPath";
-
+import {checkAdminAuth, checkUserAuth} from './Security/IdentifierGenerator';
 
 
 //const multerAvatar = multer({ dest: "uploads/avatar/" });
 
-export const localsMiddleware = (req, res, next) => {
-  res.locals.siteName = "Working at Home";
-  res.locals.routes = routes;
-  res.locals.loggedUser = req.user || null;
+export const localsMiddleware = (request, response, next) => {
+  response.locals.siteName = "Working at Home";
+  response.locals.routes = routes;
+  response.locals.loggedUser = request.user || null;
 
+  if(checkAdminAuth(request.session.auth)){
+    response.locals.auth = "admin";
+  }else if(checkUserAuth(request.session.auth)){
+    response.locals.auth = "user";
+  }else{
+    response.locals.auth = undefined;
+  }
+  
   next();
 };
 

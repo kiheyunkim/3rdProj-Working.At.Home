@@ -39,7 +39,12 @@ const WORKING_ROOT = "/working";
 //비디오 영역
 const VIDEO_ROOT = '/video';
 const VIDEO_UPLOAD = '/upload';
-const VIDEO_DETAIL = "/:video";
+const VIDEO_DETAIL = "/detail";
+const VIDEO_DETAIL_REQUEST = "/detail/:filename";
+const VIDEO_EDIT = '/edit';
+const VIDEO_EDIT_REQUEST = "/edit/:filename";
+
+
 const EDIT_VIDEO = "/:id/edit-video";
 const DELETE_VIDEO = "/:id/delete";
 const SEARCH_VIDEO = "/:id/Search";
@@ -132,61 +137,12 @@ export default {
       root: ROOT,
       all:ALL,
       upload:VIDEO_UPLOAD,
-      //작업중
       detail:VIDEO_DETAIL,
-      
-      edit:EDIT_VIDEO,
+      detailRequest:VIDEO_DETAIL_REQUEST,
+      edit:VIDEO_EDIT,
+      editRequest:VIDEO_EDIT_REQUEST,
       delete:DELETE_VIDEO,
-      search:SEARCH_VIDEO,
-      convert:(id)=>{(id) => {
-        if (id) {
-          return `/videos/${id}`;
-        } else {
-          return VIDEO_DETAIL;
-        }
-      }}
+      search:SEARCH_VIDEO
     }
   }
-/*
-  vedio:{
-    root: ROOT,
-    videos: VIDEOS,
-    upload: UPLOAD,
-    videoDetail: (id) => {
-      if (id) {
-        return `/videos/${id}`;
-      } else {
-        return VIDEO_DETAIL;
-      }
-    },
-    editVideo: (id) => {
-      if (id) {
-        return `/videos/${id}/edit-video`;
-      } else {
-        return EDIT_VIDEO;
-      }
-    },
-    deleteVideo: (id) => {
-      if (id) {
-        return `/videos/${id}/delete`;
-      } else {
-        return DELETE_VIDEO;
-      }
-    }
-  },
-  user:{
-      root: ROOT,
-      users: USERS,
-      userDetail: (id) => {
-        if (id) {
-          return `/users/${id}`;
-        } else {
-          return USER_DETAIL;
-        }
-      },
-      editProfile: EDIT_PROFILE,
-      changePassword: CHANGE_PASSWORD,
-      me: ME
-  },
-  */
 };

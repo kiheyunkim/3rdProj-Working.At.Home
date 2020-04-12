@@ -84,8 +84,8 @@ export const postJoin = async (request, response) => {
       transaction = await sequelize.transaction();
       await sequelize.models.whitelist.destroy({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}},{transaction});
       await sequelize.models.user.create({email:emailInput, accountType:"local",passwd:sha256(passwordInput + newSalt),salt:newSalt,verification:verificationStr,verified:false, lastchange:new Date(), needChange:false}, {transaction});
-      await sequelize.models.employee.create({email:emailInput, name:nameInput, employeenum:parseInt(emloyeeNumInput), grade:'admin', verified:false},{transaction});
-      //await Emailsend(emailInput, '인증번호입니다', verificationStr);
+      await sequelize.models.employee.create({email:emailInput, name:nameInput, employeenum:parseInt(emloyeeNumInput), grade:grade, verified:false},{transaction});
+      await Emailsend(emailInput, '인증번호입니다', verificationStr);
 
       transaction.commit(); 
     } catch (error) {
@@ -190,7 +190,7 @@ export const getLogin = (request, response) => {
 
 //##0.Local 영역
 export const postLogin = passport.authenticate('local',{
-    successRedirect: '/postCallback',
+    successRedirect: routes.global.passportCallback.postCallBack,
     failureRedirect: routes.global.error
 });
 

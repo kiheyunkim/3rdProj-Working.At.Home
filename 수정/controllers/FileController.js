@@ -1,9 +1,8 @@
 import {addBlackListCount} from './../Security/BlackList';
 import {checkAdminAuth, checkUserAuth} from './../Security/IdentifierGenerator';
-import routes from './../routers/RouterPath';
 import fs from 'fs';
 import sequelize from './../models/index';
-let path = process.cwd()+'\\uploads\\videos\\';
+const path = process.cwd()+'\\uploads\\videos\\';
 
 export const fileFirewall = (request,response,next)=>{
   next();
@@ -23,7 +22,6 @@ export const getFile = async (request,response)=>{
         response.status(404);
         return;
     }
-
     //1차. 요청할 수 있는 파일인가?
     if(!canGetAll){//유저는 검사를 해야함
         let findCount = await sequelize.models.videos.count({where:{email:request.user.email,filename:fileName}});
@@ -32,14 +30,12 @@ export const getFile = async (request,response)=>{
             return;
         }
     }
-    
     //2차. 파일이 있는가?
     if(!fs.existsSync(path + fileName)){
         response.status(404);
         return;
     }
     //3차. 파일을 전송하자
-
     //4차. 오류가 발생하면 오류를 전송해주자
     response.sendFile(path+fileName,(Errback)=>{
        if(Errback){

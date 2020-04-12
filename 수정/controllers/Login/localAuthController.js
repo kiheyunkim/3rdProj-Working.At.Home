@@ -38,16 +38,14 @@ export const postAuthAccount = async (request, response) => {
     }
 
     try {
-        await sequelize.models.user.update({verified:true},{where:{email:request.user.email}});
+        await sequelize.models.employee.update({verified:true},{where:{email:request.user.email}});
     } catch (error) {
-        console.log(error);
         response.render('Info',{message:"DB 오류",infoType:'back'});
         return;
     }
 
     try {
         let result2 = await sequelize.models.employee.findOne({where:{email:request.user.email}});
-        console.log(result2);
         if(result2.dataValues.grade === 'user'){
             request.session.auth = getUserAuth();
         }else if(result2.dataValues.grade === 'admin'){
@@ -56,7 +54,6 @@ export const postAuthAccount = async (request, response) => {
             throw new Error('잘못된 계정');
         }   
     } catch (error) {
-        console.log(error);
         response.render('Info',{message:"DB 오류",infoType:'back'});
         return;
     }

@@ -4,7 +4,6 @@ import routes from './../routers/RouterPath';
 import sequelize from "./../models/index";
 import passport from 'passport'
 export const globalFirewall = (request,response,next)=>{
-  console.log(request.session);
   if(checkBlackList(request.socket.remoteAddress) === -1){
     response.render('Info',{pageTitle:'Error!', message:"IP가 차단되었습니다. 관리자에게 문의하세요.",infoType:'home'});
     return;
@@ -46,7 +45,9 @@ export const facebookCallback = passport.authenticate('facebook', { failureRedir
 export const kakaoCallback = passport.authenticate('kakao', { failureRedirect: '/error' ,successRedirect:'/postCallback'});
 
 export const postCallback = async (request, response) => {
+  console.log(request.session);
   if(request.isAuthenticated()){
+        
     let findEmployee = null;
     let findUser = null;
     try {
@@ -58,7 +59,7 @@ export const postCallback = async (request, response) => {
     }
   
     let grade = findEmployee.dataValues.grade;
-    let verified = findUser.dataValues.verified;
+    let verified = findEmployee.dataValues.verified;
     let accountType = findUser.dataValues.accountType;
 
     if((findEmployee === null && findUser === null) || accountType != request.user.type){
@@ -67,7 +68,7 @@ export const postCallback = async (request, response) => {
         return;
       }
     }
-    
+
     console.log(request.user);
     console.log(verified);
     
@@ -89,8 +90,8 @@ export const postCallback = async (request, response) => {
       response.redirect(routes.global.root);
       return;
     }else{
-      addBlackListCount(request.session.remoteip);
       response.redirect(routes.global.root);
+      return;
     }
 
   }else{

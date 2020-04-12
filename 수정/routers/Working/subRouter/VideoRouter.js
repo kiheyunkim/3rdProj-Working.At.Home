@@ -21,10 +21,11 @@ videoRouter.all(VideoRouterPath.all, videoFireWall);
 videoRouter.get(VideoRouterPath.root, getVideoHome)
 videoRouter.get(VideoRouterPath.upload, getUpload);
 videoRouter.post(VideoRouterPath.upload,uploadVideo, postUpload);
-videoRouter.post(VideoRouterPath.detail, videoDetail);
-videoRouter.get(VideoRouterPath.edit, getEditVideo);
+videoRouter.get(VideoRouterPath.detailRequest, videoDetail);
+videoRouter.get(VideoRouterPath.editRequest, getEditVideo);
 videoRouter.post(VideoRouterPath.edit, postEditVideo);
 videoRouter.get(VideoRouterPath.delete,deleteVideo);
+
 videoRouter.get(VideoRouterPath.search, search);
 
 export default videoRouter;

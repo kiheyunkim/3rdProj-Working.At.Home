@@ -3,9 +3,9 @@ extends layouts/Main
 block content 
     .video-detail__container
         .video__player
-            video(src=routes.working.file.origin + routes.working.file.fileget + '/?fileName=' +video,controls=true)
+            video(src=routes.working.file.origin + routes.working.file.fileget + '?fileName=' +video.fileName,controls=true)
         .video__info
-            a(href=routes.editVideo(video.id))
+            a(href=routes.working.video.origin + routes.working.video.edit + '/' +video.fileName)
                 button 비디오 편집
             h5.video__title=video.title
             p.video__description=video.description

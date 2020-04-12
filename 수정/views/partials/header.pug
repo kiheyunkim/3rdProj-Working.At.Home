@@ -5,8 +5,13 @@ header.header
                 i.fas.fa-address-card
                 i.fas.fa-tasks
         .header__column
-            form(action=routes.search, method="get")
-                input(type="text", placeholder="사원을 검색하세요", name="term")
+            if auth === "admin" || auth === "user"
+                if auth === "admin"
+                    form(action=routes.search, method="get")
+                        input(type="text", placeholder="사원을 검색하세요", name="term")
+                if auth === "user"
+                    form(action=routes.search, method="get")
+                        input(type="text", placeholder="제목을 검색하세요", name="term")
         .header__column
             ul
                 if !loggedUser

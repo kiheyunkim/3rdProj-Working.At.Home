@@ -43,7 +43,7 @@ export default async ()=>{
                 verified:true
             },{transaction});
             
-            //await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
+            await Emailsend(adminEmail.email,'비밀번호 재발급','비밀번호:'+tempPasswd);
         }
         await transaction.commit();
     } catch (error) {
