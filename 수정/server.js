@@ -22,9 +22,3 @@ var httpsServer = https.createServer(credentials, app);
 httpServer.listen(8080);
 httpsServer.listen(8443);
 //app.listen(PORT, serverListening);
-
-//import "./mongoDB";
-
-//import "./models/Video";
-//import "./models/Comment";
-//import "./models/User";

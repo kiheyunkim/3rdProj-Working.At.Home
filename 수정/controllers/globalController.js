@@ -20,15 +20,16 @@ export const globalFirewall = (request,response,next)=>{
     return;
   }
 
-
   next();
 }
 
 export const firstHome = (request, response) => {
   if(request.isAuthenticated() && (checkAdminAuth(request.session.auth) || checkUserAuth(request.session.auth))){
     response.redirect(routes.working.video.origin + routes.working.video.root);
+  }else if(request.isAuthenticated() && request.user.auth ===undefined){
+    response.redirect(routes.global.passportCallback);
   }else{
-    response.render("Init_Home", { pageTitle: "Init Home" });
+    response.render("Init_Home", { pageTitle: "Init Home" ,homeType :"Init"});
   }
 };
 
@@ -45,7 +46,6 @@ export const facebookCallback = passport.authenticate('facebook', { failureRedir
 export const kakaoCallback = passport.authenticate('kakao', { failureRedirect: '/error' ,successRedirect:'/postCallback'});
 
 export const postCallback = async (request, response) => {
-  console.log(request.session);
   if(request.isAuthenticated()){
         
     let findEmployee = null;
@@ -68,10 +68,6 @@ export const postCallback = async (request, response) => {
         return;
       }
     }
-
-    console.log(request.user);
-    console.log(verified);
-    
 
     if(!verified){
       response.redirect(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth);

@@ -4,10 +4,7 @@ block content
     .user-profile
         .user-profile__header
             img.u-avatar(src=user.avatarUrl)
-            h4.profile__username=user.name
-        if user.id === loggedUser.id
+            h4.profile__username=user.email
             .user-profile__btns
-                a(href=`/users${routes.editProfile}`)
+                a(href=routes.working.user.origin + routes.working.user.edit)
                     button ✏️ 프로필 수정하기
-                a(href=`/users${routes.changePassword}`)
-                    button 🔒 패스워드 변경하기 

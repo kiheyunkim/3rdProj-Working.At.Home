@@ -3,6 +3,7 @@ import {addUserModel} from './User';
 import {addEmplyeeModel} from './Employee';
 import {addMovieInfoModel} from './MovieInfo';
 import {addWhiteListModel} from './WhiteLIst';
+import {addAvatarInfoModel} from './LocalAvatar';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -18,5 +19,6 @@ addUserModel(sequelize);
 addEmplyeeModel(sequelize);
 addMovieInfoModel(sequelize);
 addWhiteListModel(sequelize);
+addAvatarInfoModel(sequelize);
 
 export default sequelize;

@@ -1,9 +1,6 @@
 import routes from "./routers/RouterPath";
 import {checkAdminAuth, checkUserAuth} from './Security/IdentifierGenerator';
 
-
-//const multerAvatar = multer({ dest: "uploads/avatar/" });
-
 export const localsMiddleware = (request, response, next) => {
   response.locals.siteName = "Working at Home";
   response.locals.routes = routes;
@@ -45,4 +42,4 @@ export const OnlyPrivate = (req, res, next) => {
 };
 
 
-//export const uploadAvatar = multerAvatar.single("avatar");
+

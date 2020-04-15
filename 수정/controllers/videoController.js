@@ -1,6 +1,5 @@
 //Video 영역에서의 컨트롤 함수
 import routes from "../routers/RouterPath";
-import Video from "../models/Video";
 import multer from "multer";
 import sequelize from "../models";
 import fs from 'fs';
@@ -14,7 +13,33 @@ export const videoFireWall = (request, response, next)=>{
 }
 
 export const getVideoHome = async (request,response)=>{
-  let videos = await sequelize.models.video.findAndCountAll({where:{email:request.user.email}})
+  let result = null;
+  try {
+    result = await sequelize.models.employee.findOne({where:{email:request.user.email}});
+  } catch (error) {
+    response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
+  }
+
+  if(result === null){
+    response.render('Info',{pageTitle:'Error!', message:"잘못된 접근입니다.",infoType:'back'});
+    return;
+  }
+
+  let grade = result.dataValues.grade;
+  let videos = null;
+  try {
+    if(grade === 'admin'){
+      videos = await sequelize.models.video.findAndCountAll();
+    }else if(grade === 'user'){
+      videos = await sequelize.models.video.findAndCountAll({where:{email:request.user.email}});
+    }else{
+      throw new Error();
+    }
+  } catch (error) {
+    response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
+  }
+  
+  
   let count = videos.count;
   let items = [];
 
@@ -25,15 +50,32 @@ export const getVideoHome = async (request,response)=>{
   response.render('Home',{ pageTitle: "videoHome", videos:items});
 }
 
-
 export const videoDetail = async (request, response) => {
   const {
     params: { filename },
   } = request;
 
+  let result = null;
+  try {
+    result = await sequelize.models.employee.findOne({where:{email:request.user.email}});
+  } catch (error) {
+    response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
+  }
+
+  if(result === null){
+    response.render('Info',{pageTitle:'Error!', message:"잘못된 접근입니다.",infoType:'back'});
+    return;
+  }
+
   let findResult = null;
   try {
-    findResult = await sequelize.models.video.findOne({where:{email:request.user.email, filename:filename}});
+    if(result.grade === 'admin'){
+      findResult = await sequelize.models.video.findOne({where:{filename:filename}});
+    }else if( result.grade === 'user'){
+      findResult = await sequelize.models.video.findOne({where:{email:request.user.email, filename:filename}});
+    }else{
+      throw new Error();
+    }
   } catch (error) {
     response.render('Info',{pageTitle:'Error!', message:"오류가 발생했습니다.",infoType:'back'});
     return;
@@ -54,13 +96,25 @@ export const getUpload = (request, response) => {
 };
 
 export const postUpload = async (request, response) => {
+   if(request.file === undefined){
+    response.render('Info',{pageTitle:'Error!', message:"html 변조가 감지되었습니다.",infoType:'back'});
+    return;
+   }
+  
   const {
     body: { title, description },
     file: { path,filename }
   } = request;
 
-  await sequelize.models.video.create({email:request.user.email,filename:filename,path:path,date:new Date(),title:title,description:description});
+  let titleInput = String(title);
+  let descriptionInput = String(description);
 
+  if(titleInput.length === 0 && titleInput.length > 254 && descriptionInput.length === 0 && descriptionInput.length > 254){
+    response.render('Info',{pageTitle:'Error!', message:"html 변조가 감지되었습니다.", infoType:'back'});
+    return;
+  }
+
+  await sequelize.models.video.create({email:request.user.email,filename:filename,path:path,date:new Date(),title:titleInput,description:descriptionInput});
   response.redirect(routes.working.video.origin + routes.working.root);
 };
 
@@ -72,14 +126,34 @@ export const getEditVideo = async (request, response) => {
   
   let result = null;
   try {
-    result = await sequelize.models.video.findOne({where:{email:request.user.email, filename:filename}});
+    result = await sequelize.models.employee.findOne({where:{email:request.user.email}});
   } catch (error) {
-    console.log(error);
+    response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
+  }
+
+  if(result === null){
+    response.render('Info',{pageTitle:'Error!', message:"잘못된 접근입니다.",infoType:'back'});
+    return;
+  }
+
+  let grade = result.dataValues.grade;
+
+
+  let videoResult = null;
+  try {
+    if(grade==='admin'){
+      videoResult = await sequelize.models.video.findOne({where:{filename:filename}});
+    }else if(grade ==='user'){
+      videoResult = await sequelize.models.video.findOne({where:{email:request.user.email, filename:filename}});
+    }else{
+      throw new Error();
+    }
+  } catch (error) {
     response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
     return;
   }
   
-  if(result === null){
+  if(videoResult === null){
     response.render('Info',{pageTitle:'Error!', message:"잘못된 접근입니다.",infoType:'back'});
     return;
   }
@@ -87,10 +161,10 @@ export const getEditVideo = async (request, response) => {
   if(request.user.videoTask !== undefined){
     delete request.user.videoTask;
   }
-  request.user.videoTask = filename;
+  request.user.videoTask = videoResult.filename;
 
-  let video = {fileName:result.filename,title:result.title,description:result.description,views:0, comments:[]}; 
-  response.render("EditVideo", { pageTitle: `편집 ${result.title}`, video }); 
+  let video = {fileName:videoResult.filename,title:videoResult.title,description:videoResult.description,views:0, comments:[]}; 
+  response.render("EditVideo", { pageTitle: `편집 ${videoResult.title}`, video }); 
 };
 
 export const postEditVideo = async (request, response) => {
@@ -99,15 +173,20 @@ export const postEditVideo = async (request, response) => {
   } = request;
   let taskTitle = request.user.videoTask;
   let result = 0;
-  if(request.user.videoTask === undefined){
+
+  if(titleInput.length === 0 && titleInput.length > 254 && descriptionInput.length === 0 && descriptionInput.length > 254){
+    response.render('Info',{pageTitle:'Error!', message:"html 변조가 감지되었습니다.", infoType:'back'});
+    return;
+  }
+
+  if(taskTitle === undefined){
     response.render('Info',{pageTitle:'Error!', message:"잘못된 접근입니다.",infoType:'back'});
     return;
   }
 
   try {
-    result = await sequelize.models.video.count({email:request.user.email,filename:taskTitle});
+    result = await sequelize.models.video.count({where:{email:request.user.email, filename:taskTitle}});
   } catch (error) {
-    console.log(error);
     response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
     return;
   }
@@ -118,7 +197,7 @@ export const postEditVideo = async (request, response) => {
   }
 
   try {
-    await sequelize.models.video.update({title:title,description:description},{where:{email:request.user.email,filename:taskTitle}});
+    await sequelize.models.video.update({title:title, description:description},{where:{email:request.user.email, filename:taskTitle}});
   } catch (error) {
     response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
     return;
@@ -137,9 +216,8 @@ export const deleteVideo = async (request, response) => {
   let result = 0;
 
   try {
-    result = await sequelize.models.video.count({email:request.user.email,filename:taskTitle});
+    result = await sequelize.models.video.count({where:{email:request.user.email,filename:taskTitle}});
   } catch (error) {
-    console.log(error);
     response.render('Info',{pageTitle:'Error!', message:"DB 오류",infoType:'back'});
     return;
   }
@@ -155,8 +233,7 @@ export const deleteVideo = async (request, response) => {
     fs.unlinkSync(path + taskTitle);
     await sequelize.models.video.destroy({where:{filename:taskTitle}},{transaction});
   } catch (error) {
-    console.log(error);
-    transaction.rollback();
+    await transaction.rollback();
     response.render('Info',{pageTitle:'Error!', message:"DB오류",infoType:'back'});
     return;
   }

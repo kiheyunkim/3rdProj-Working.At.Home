@@ -43,26 +43,26 @@ const VIDEO_DETAIL = "/detail";
 const VIDEO_DETAIL_REQUEST = "/detail/:filename";
 const VIDEO_EDIT = '/edit';
 const VIDEO_EDIT_REQUEST = "/edit/:filename";
+const DELETE_VIDEO = "/delete";
 
-
-const EDIT_VIDEO = "/:id/edit-video";
-const DELETE_VIDEO = "/:id/delete";
+//아직
 const SEARCH_VIDEO = "/:id/Search";
 
 //파일 영역
 const FILE_ROOT = "/File";
 const GET_FILE = "/getfile";
+const GET_AVATAR = '/getAvatar';
 
 //사용자 영역
 const USER_ROOT = "/user";
+const ME = "/me";
+const EDIT_PROFILE = "/edit-profile";
+const CHANGE_PASSWORD = "/change-password";
 
 const SEARCH = "/search";
 const ABOUT = "/about";
 const USERS = "/users";
 const USER_DETAIL = "/:id";
-const EDIT_PROFILE = "/edit-profile";
-const CHANGE_PASSWORD = "/change-password";
-const ME = "/me";
 
 
 export default {
@@ -123,14 +123,17 @@ export default {
     all:ALL,
     user:{
       origin:WORKING_ROOT + USER_ROOT,
-      root: USER_ROOT,
+      root: ROOT,
       all:ALL,
+      me:ME,
+      edit:EDIT_PROFILE
     },
     file:{
       origin:WORKING_ROOT + FILE_ROOT,
       root:ROOT,
       all:ALL,
       fileget:GET_FILE,
+      avatarget:GET_AVATAR
     },
     video:{
       origin:WORKING_ROOT + VIDEO_ROOT,

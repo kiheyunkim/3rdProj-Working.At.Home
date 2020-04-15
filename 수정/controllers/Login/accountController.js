@@ -76,8 +76,6 @@ export const postJoin = async (request, response) => {
     let length = tempHash.length;
     let verificationStr = tempHash.substr(length - 8, length);
     let newSalt = sha256(RandomStringGenerator(Math.random()*40 + 10));
-    console.log();
-    
     let transaction = null;
 
     try {
@@ -85,15 +83,14 @@ export const postJoin = async (request, response) => {
       await sequelize.models.whitelist.destroy({where:{email:emailInput, employeenum:emloyeeNumInput, name:nameInput}},{transaction});
       await sequelize.models.user.create({email:emailInput, accountType:"local",passwd:sha256(passwordInput + newSalt),salt:newSalt,verification:verificationStr,verified:false, lastchange:new Date(), needChange:false}, {transaction});
       await sequelize.models.employee.create({email:emailInput, name:nameInput, employeenum:parseInt(emloyeeNumInput), grade:grade, verified:false},{transaction});
+      await sequelize.models.localAvatar.create({email:emailInput, filename:null , path:null} ,{transaction});
       await Emailsend(emailInput, '인증번호입니다', verificationStr);
 
       transaction.commit(); 
     } catch (error) {
       console.log(error);
-      if(transaction !== null){
-        await transaction.rollback();
-      }
-      response.render('Info',{message:"DB 오류", infoType:'back'});;
+      await transaction.rollback();
+      response.render('Info',{message:"DB 오류", infoType:'back'});
       return;
     }
 

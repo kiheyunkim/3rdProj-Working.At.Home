@@ -1,32 +1,23 @@
 import express from 'express';
 import router from '../../RouterPath';
+import multer from 'multer';
+const multerAvatar = multer({ dest: "uploads/avatar/" });
+const uploadAvatar = multerAvatar.single("avatar");
 
 import {
     userFirewall,
-    home,
     showMe,
     getEditProfile,
-    postEditProfile,
-    getChangePassword,
-    postChangePassword,
-    userDetail
+    postEditProfile
   } from "../../../controllers/userController";
 
-let userRouterPath = router.user;
+let userRouterPath = router.working.user;
 const userRouter = express.Router();
-  /*
-
+  
 userRouter.all(userRouterPath.root, userFirewall);
-
-userRouter.get(userRouterPath.root, home);
-
-userRouter.get(userRouterPath.editProfile, getEditProfile);
-userRouter.post(userRouterPath.editProfile,/* uploadAvatar, postEditProfile); // 수정?
-
-userRouter.get(userRouterPath.changePassword, getChangePassword);
-userRouter.post(userRouterPath.changePassword, postChangePassword);
-
 userRouter.get(userRouterPath.me, showMe);
-userRouter.get(userRouterPath.userDetail(), userDetail);
-*/
+
+userRouter.get(userRouterPath.edit, getEditProfile);
+userRouter.post(userRouterPath.edit, uploadAvatar, postEditProfile);
+
 export default userRouter;

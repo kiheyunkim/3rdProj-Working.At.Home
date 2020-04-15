@@ -10,6 +10,6 @@ block content
             div.fileUpload
                 label(for="file") Video File
                 input(type="file", id="file", name="videoFile", required=true, accept="video/*")
-            input(type="text", placeholder="제목", name="title",required=true)
-            textarea(name="description", placeholder="내용",required=true)
+            input(type="text", placeholder="제목", name="title",required=true, minlength ="1", maxLength = "254")
+            textarea(name="description", placeholder="내용",required=true, minlength ="1", maxLength = "254")
             input(type="submit", value="비디오 업로드")
