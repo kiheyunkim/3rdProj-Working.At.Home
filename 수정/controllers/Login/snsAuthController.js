@@ -1,5 +1,8 @@
 import { addBlackListCount } from "../../Security/BlackList";
 import sequelize from '../../models/index';
+import RandomStringGenerator from './../../Security/RandomStringGenerator';
+import {getAdminAuth, getUserAuth} from './../../Security/IdentifierGenerator';
+import sha256 from 'sha256';
 export const accountAuthSnsFirewall = (request,response,next)=>{
     if(request.user.type !== 'local'){
         next();
@@ -56,25 +59,29 @@ export const postJoinSocial = async (request, response, next) => {
     }
     
     let grade = whitelistResult.grade;
-    let tempHash = sha256(RandomStringGenerator(Math.random()*40 + 10));
-    let length = tempHash.length;
-    let verificationStr = tempHash.substr(length - 8, length);
-    let newSalt = sha256(RandomStringGenerator(Math.random()*40 + 10));
   
     let transaction=null;
     try {
       transaction = await sequelize.transaction();
       
-      await sequelize.models.whitelist.destroy({where:{email:emailInput,employeenum:employeeNum, name:nameInput}}, {transaction});
-      await sequelize.models.user.create({email:emailInput, accountType:request.user.type,passwd:sha256(passwordInput + newSalt),salt:newSalt,verification:verificationStr, lastchange:new Date(), needChange:false}, {transaction});
-      await sequelize.models.employee.create({email:emailInput, name:nameInput, employeenum:employeeNum, grade:grade,verified:false}, {transaction});
-  
+      await sequelize.models.whitelist.destroy({where:{email:request.user.email,employeenum:emloyeeNumInput, name:nameInput}}, {transaction});
+      await sequelize.models.user.create({email:request.user.email, accountType:request.user.type,passwd:' ',salt:' ',verification:' ', lastchange:new Date(), needChange:false}, {transaction});
+      await sequelize.models.employee.create({email:request.user.email, name:nameInput, employeenum:emloyeeNumInput, grade:grade,verified:false}, {transaction});
+      await transaction.commit();
       //이메일 전송
     } catch (error) {
+      console.log(error);
       await transaction.rollback();
       response.render('Info',{message:"DB 오류.",infoType:'back'});
+      return;
     }
+
+    if(grade === 'admin'){
+      request.session.auth = getAdminAuth();
+    }else if(grade === 'admin'){
+      request.session.auth = getUserAuth();
+    }
+
   
-    response.logOut();
-    response.render('Info',{message:"가입이 완료되었습니다. 다시 로그인해주세요",infoType:'home'});
+    response.redirect('/');
 };

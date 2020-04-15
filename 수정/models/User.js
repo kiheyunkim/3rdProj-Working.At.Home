@@ -24,10 +24,6 @@ let addUserModel = (sequelize) => {
             type:DataTypes.STRING(8),
             allowNull:false
         },
-        verified:{
-            type:DataTypes.BOOLEAN,
-            allowNull:false
-        },
         lastchange:{
             type:DataTypes.DATE(),
             allowNull:false

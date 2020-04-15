@@ -26,8 +26,8 @@ export const globalFirewall = (request,response,next)=>{
 export const firstHome = (request, response) => {
   if(request.isAuthenticated() && (checkAdminAuth(request.session.auth) || checkUserAuth(request.session.auth))){
     response.redirect(routes.working.video.origin + routes.working.video.root);
-  }else if(request.isAuthenticated() && request.user.auth ===undefined){
-    response.redirect(routes.global.passportCallback);
+  }else if(request.isAuthenticated() && request.user.auth === undefined){
+    response.render("Init_Home", { pageTitle: "Auth Home" ,homeType :"NonAuth"});
   }else{
     response.render("Init_Home", { pageTitle: "Init Home" ,homeType :"Init"});
   }
@@ -57,18 +57,22 @@ export const postCallback = async (request, response) => {
       response.render('Info',{pageTitle:'Error!', message:"DB오류",infoType:'back'});
       return;
     }
-  
-    let grade = findEmployee.dataValues.grade;
-    let verified = findEmployee.dataValues.verified;
-    let accountType = findUser.dataValues.accountType;
 
-    if((findEmployee === null && findUser === null) || accountType != request.user.type){
+    if((findEmployee === null && findUser === null) || 'local' !== request.user.type){
       if(request.user.type !== 'local'){
         response.render('question',{pageTitle:"Join?"});
         return;
       }
     }
 
+    console.log(request.user);
+    console.log(findEmployee);
+    let grade = findEmployee.dataValues.grade;
+    let verified = findEmployee.dataValues.verified;
+    let accountType = findUser.dataValues.accountType;
+
+
+    console.log(findEmployee);
     if(!verified){
       response.redirect(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth);
       return;

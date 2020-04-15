@@ -15,6 +15,7 @@ html(lang='en')
         .container
           .row.description.align-items-center.justify-content-center
             ul.portal_cover
+             if homeType === 'Init'
               li
                 a(href=(routes.login.account.origin + routes.login.account.login))
                   | 로그인 
@@ -26,12 +27,23 @@ html(lang='en')
                   | 회원가입 
                   em
                     img(src='/static/right.png')     
-                  span Sign Up                 
-
+                  span Sign Up
+             if homeType === 'NonAuth'                 
+              li
+                a(href=(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth))
+                  | 인증하기 
+                  em
+                   img(src='/static/left.png')
+                  span Sign Up
+              li
+                a(href=(routes.global.logout))
+                  | 로그아웃 
+                  em
+                   img(src='/static/right.png')     
+                  span Sign Up
             .col-md-8.text-center
               .text
                 h2 Work Home💻
-                h4.mb-5 안시우 해킹해 볼 수있으면 해보시지!
-                  span Login    
+                h4.mb-5 안시우 해킹해 볼 수있으면 해보시지!  
 
               
