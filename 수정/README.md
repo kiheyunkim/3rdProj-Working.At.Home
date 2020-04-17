@@ -8,7 +8,7 @@
 
 ## Database
 
-- MongoDB(mongoose)
+- Mysql(SequelizeJS)
 
 ## Main 구현사항
 
