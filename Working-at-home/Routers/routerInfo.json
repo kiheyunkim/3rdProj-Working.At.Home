@@ -1,8 +1,0 @@
-{
-    "adminRouter":"/admin/",
-    "commonRouter":"/",
-    "fileRouter":"/file",
-    "loginRouter":"/login",
-    "memberRouter":"/member",
-    "videoRouter":"/video"
-}

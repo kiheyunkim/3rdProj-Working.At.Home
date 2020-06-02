@@ -1,9 +1,0 @@
-mixin videoBlock(video = {})
-    .videoBlock
-        a(href=routes.working.video.origin + routes.working.video.detail + "/" + video.videoFile)
-            video.videoBlock__thumbnail(src=(routes.working.file.origin + routes.working.file.fileget + '/?fileName=' +video.videoFile), controls=false)
-            h4.videoBlock__title=video.title
-            if video.views === 1
-                h6.videoBlock__views 1 view
-            else
-                h6.videoBlock__views #{video.views} 조회수

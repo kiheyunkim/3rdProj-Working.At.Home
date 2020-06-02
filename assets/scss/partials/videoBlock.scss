@@ -1,0 +1,34 @@
+.videoBlock {
+  video {
+    margin-bottom: 10px;
+
+    max-width: 100%;
+
+    /* width: 1000px;
+    height: 500px;
+    object-fit: cover;
+    border: 1px solid #000; */
+  }
+  .videoBlock__title {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
+}
+
+/* .videoBlock__thumbnail {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin-bottom: 4em;
+}
+.videoBlock__thumbnail iframe,
+.videoBlock__thumbnail object,
+.videoBlock__thumbnail embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+} */

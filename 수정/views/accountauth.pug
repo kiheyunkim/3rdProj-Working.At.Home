@@ -1,8 +1,0 @@
-extends layouts/Main
-
-block content
-    .form-container
-        form(action=(routes.login.accountAuth.local.origin + routes.login.accountAuth.local.accountAuth), method="post")
-            h3 계정 이메일 인증
-            input(type="text", name="authnum", placeholder="인증번호", required=true)
-            input(type="submit", value="인증하기")

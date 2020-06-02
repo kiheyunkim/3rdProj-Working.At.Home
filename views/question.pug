@@ -1,0 +1,10 @@
+extends layouts/Main
+
+block content
+    .form-container
+        .title 
+            h1 가입 후에 가능합니다. 가입하시겠습니까?
+        form(method="get")
+            input(type="button", value="로그아웃", onclick="location.href ='/logout'")
+            input(type="button", value="가입하기", onclick="location.href ='/login/accountauth/sns/socialJoin'")
+            

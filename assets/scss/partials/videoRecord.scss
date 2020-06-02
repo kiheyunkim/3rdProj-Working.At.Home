@@ -1,0 +1,24 @@
+.record-container {
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 50px;
+  position: relative;
+  video {
+    background-color: rgb(61, 55, 55);
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  #jsRecordBtn {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    height: 40px;
+
+    bottom: -30px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}

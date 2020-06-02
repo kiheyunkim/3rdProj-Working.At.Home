@@ -1,0 +1,14 @@
+extends layouts/Main
+
+block content
+    .form-container
+        .title 
+            h1 Working at Home 계정 만들기
+        form(action=(href=(routes.login.account.origin + routes.login.account.join)), method="post")
+            input(type="text", name="name", placeholder="성명" ,pattern = "[가-힣]{2,4}|[a-zA-Z]{2,10}",title = "올바르지 않은 이름입니다.",required=true)
+            input(type="text", name="email", placeholder="이메일",pattern = "(?=.{1,254}$)[-\\w!#$%&'*+/=`{|}~?^]+(\\.[-\\w!#$%&'*+/=`{|}~?^]+)*@((\\d{1,3}\\.){3}\\d{1,3}|([-\\w]+\\.)+[a-zA-Z]{2,6})$",title = "이메일 형식이 올바르지 않습니다.," required=true)
+            input(type="test", name="employeenum", placeholder="사번",required=true)
+            input(type="password", name="password", placeholder="새 비밀번호", pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}", required=true, title="비밀번호는 특수문자 소문자 대문자 숫자를 섞은 8자리 이상이어야 합니다")
+            input(type="password", name="password2", placeholder="비밀번호 확인",pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}", required=true, title="비밀번호는 특수문자 소문자 대문자 숫자를 섞은 8자리 이상이어야 합니다")
+            input(type="submit",value="계정 등록하기✅")
+        include partials/socialLogin

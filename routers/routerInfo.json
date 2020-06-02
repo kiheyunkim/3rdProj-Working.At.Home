@@ -1,0 +1,12 @@
+{
+    "Global":"/",
+    "Login":"/login",
+    "account":"/login/account",
+    "accountAuth":"/login/accountauth",
+    "accountAuthlocal":"/login/accountauth/local",
+    "accountAuthsns":"/login/accountauth/sns",
+    "working":"/working",
+    "video":"/working/video",
+    "user":"/working/user",
+    "file":"/working/file"
+}

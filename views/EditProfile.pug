@@ -1,0 +1,16 @@
+extends layouts/Main
+
+block content
+    p 프로필 수정 
+    .form-container
+        form(action=routes.working.user.origin + routes.working.user.edit, method="post",enctype="multipart/form-data")
+            if user.type === 'local'
+                .fileUpload
+                    label(for="avatar") Avatar
+                    input(type="file", id="avatar", name="avatar",accept="image/*")
+            input(type="email", placeholder="Email", name="email",value=user.email disabled)
+            input(type="text", placeholder="Name", name="name",value=user.name disabled)
+            input(type="password", name="oldPassword", placeholder="현재 패스워드")
+            input(type="password", name="newPassword", placeholder="새로운 패스워드")
+            input(type="password", name="newPassword1", placeholder="새로운 패스워드 확인")
+            input(type="submit", value="프로필 변경하기")

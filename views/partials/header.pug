@@ -1,0 +1,31 @@
+header.header
+    .header__wrapper
+        .header__column
+            a(href=(routes.global.root))
+                i.fas.fa-address-card
+                i.fas.fa-tasks
+        .header__column
+            if auth === "admin" || auth === "user"
+                if auth === "admin"
+                    form(action=routes.search, method="get")
+                        input(type="text", placeholder="사원을 검색하세요", name="term")
+                if auth === "user"
+                    form(action=routes.search, method="get")
+                        input(type="text", placeholder="제목을 검색하세요", name="term")
+        .header__column
+            ul
+                if !loggedUser
+                    li
+                        a(href=(routes.login.account.origin+routes.login.account.reset)) 비밀번호 초기화
+                    li
+                        a(href=(routes.login.account.origin+routes.login.account.join)) 회원가입
+                    li
+                        a(href=(routes.login.account.origin+routes.login.account.login)) 로그인
+
+                else 
+                    li
+                        a(href=(routes.working.video.origin+routes.working.video.upload)) 업로드하기
+                    li
+                        a(href=routes.working.user.origin+routes.working.user.me) 프로필 보기
+                    li
+                        a(href=routes.global.logout) 로그아웃
